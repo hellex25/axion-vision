@@ -6,33 +6,15 @@ import {
   createRootRoute,
 } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
+import { translations } from '~/i18n/translations'
+import { buildRootHeadLinks, buildRootHeadMeta, buildJsonLd } from '~/lib/seo'
 import appCss from '../styles/app.css?url'
+
+const defaultMeta = translations.ro.meta
 
 export const Route = createRootRoute({
   head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      {
-        title: 'Project Axion — Ecosisteme digitale de înaltă performanță',
-      },
-      {
-        name: 'description',
-        content:
-          'Project Axion fuzionează inginerie web de elită, infrastructură cloud suverană și fluxuri de lucru autonome. Lansăm motoare software hiper-scalabile.',
-      },
-      { name: 'theme-color', content: '#050506' },
-      {
-        property: 'og:title',
-        content: 'Project Axion — Ecosisteme digitale de înaltă performanță',
-      },
-      {
-        property: 'og:description',
-        content:
-          'Inginerie web de elită, infrastructură cloud suverană și fluxuri de lucru autonome — Axion Vision SRL.',
-      },
-      { property: 'og:type', content: 'website' },
-    ],
+    meta: buildRootHeadMeta('ro', defaultMeta),
     links: [
       { rel: 'stylesheet', href: appCss },
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -45,6 +27,7 @@ export const Route = createRootRoute({
         rel: 'stylesheet',
         href: 'https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600&display=swap',
       },
+      ...buildRootHeadLinks(),
     ],
   }),
   component: RootComponent,
@@ -59,10 +42,17 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: ReactNode }) {
+  const jsonLd = buildJsonLd('ro', defaultMeta)
+
   return (
     <html lang="ro" className="grain">
       <head>
         <HeadContent />
+        <script
+          id="axion-jsonld"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body className="bg-void text-ink antialiased">
         {children}

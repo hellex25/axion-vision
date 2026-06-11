@@ -6,7 +6,15 @@ interface Field {
 }
 
 export interface Dictionary {
-  meta: { title: string; description: string }
+  meta: {
+    title: string
+    description: string
+    keywords: string
+    ogTitle: string
+    ogDescription: string
+    twitterTitle: string
+    twitterDescription: string
+  }
   nav: {
     capabilities: string
     services: string
@@ -90,9 +98,17 @@ export interface Dictionary {
 
 const ro: Dictionary = {
   meta: {
-    title: 'Project Axion — Ecosisteme digitale de înaltă performanță',
+    title: 'Project Axion — Ecosisteme digitale de înaltă performanță | Axion Vision SRL',
     description:
-      'Project Axion fuzionează inginerie web de elită, infrastructură cloud suverană și fluxuri de lucru autonome. Lansăm motoare software hiper-scalabile.',
+      'Axion Vision SRL (Project Axion): consultanță IT, dezvoltare web full-stack, infrastructură cloud Cloudflare & Supabase, securitate cibernetică și automatizări. Soluții software scalabile pentru companii din România.',
+    keywords:
+      'Axion Vision, Project Axion, consultanță IT România, dezvoltare web, infrastructură cloud, Cloudflare Workers, Supabase, securitate cibernetică, automatizări, portaluri web, mentenanță IT',
+    ogTitle: 'Project Axion — Ecosisteme digitale de înaltă performanță',
+    ogDescription:
+      'Consultanță IT, inginerie web de elită și infrastructură cloud suverană — Axion Vision SRL.',
+    twitterTitle: 'Project Axion | Axion Vision SRL',
+    twitterDescription:
+      'Consultanță IT, dezvoltare web și infrastructură cloud pentru companii ambițioase.',
   },
   nav: {
     capabilities: 'Capabilități',
@@ -252,9 +268,17 @@ const ro: Dictionary = {
 
 const en: Dictionary = {
   meta: {
-    title: 'Project Axion — Architecting High-Throughput Digital Ecosystems',
+    title: 'Project Axion — High-Performance Digital Ecosystems | Axion Vision SRL',
     description:
-      'Project Axion fuses elite web engineering, sovereign cloud infrastructure, and autonomous workflows. We launch hyper-scalable software engines.',
+      'Axion Vision SRL (Project Axion): IT consultancy, full-stack web development, Cloudflare & Supabase cloud infrastructure, cybersecurity, and automation. Scalable software for ambitious businesses.',
+    keywords:
+      'Axion Vision, Project Axion, IT consultancy Romania, web development, cloud infrastructure, Cloudflare Workers, Supabase, cybersecurity, automation, web portals, IT maintenance',
+    ogTitle: 'Project Axion — High-Throughput Digital Ecosystems',
+    ogDescription:
+      'Elite web engineering, sovereign cloud infrastructure, and autonomous workflows — Axion Vision SRL.',
+    twitterTitle: 'Project Axion | Axion Vision SRL',
+    twitterDescription:
+      'IT consultancy, web development, and cloud infrastructure for ambitious companies.',
   },
   nav: {
     capabilities: 'Capabilities',

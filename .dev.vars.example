@@ -2,3 +2,6 @@
 RESEND_API_KEY=re_your_key_here
 CONTACT_TO=daviddricu@gmail.com
 CONTACT_FROM=Project Axion <onboarding@resend.dev>
+
+# Canonical public URL (also used at build time for sitemap/robots)
+VITE_SITE_URL=https://axion-vision.workers.dev
