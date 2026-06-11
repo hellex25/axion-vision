@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "axion-vision",
+  "compatibility_date": "2026-06-11",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "@tanstack/react-start/server-entry",
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    "CONTACT_TO": "daviddricu@gmail.com",
+    "CONTACT_FROM": "Project Axion <onboarding@resend.dev>"
+  }
+}

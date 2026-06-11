@@ -1,0 +1,4 @@
+# Copy to .dev.vars and fill in your values (never commit .dev.vars)
+RESEND_API_KEY=re_your_key_here
+CONTACT_TO=daviddricu@gmail.com
+CONTACT_FROM=Project Axion <onboarding@resend.dev>
