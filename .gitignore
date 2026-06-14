@@ -4,7 +4,11 @@ dist
 .vinxi
 .wrangler
 .dev.vars
+**/.dev.vars
 .env
+.env.*
+!.env.example
+!.dev.vars.example
 *.local
 .DS_Store
 src/routeTree.gen.ts

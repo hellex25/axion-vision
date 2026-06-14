@@ -6,7 +6,7 @@
   "description": "Project Axion — elite showcase site for Axion Vision SRL (CAEN 6220).",
   "scripts": {
     "dev": "vite dev",
-    "build": "node scripts/generate-seo-static.mjs && vite build",
+    "build": "node scripts/generate-favicons.mjs && node scripts/generate-seo-static.mjs && vite build",
     "preview": "vite preview",
     "deploy": "npm run build && wrangler deploy",
     "cf-typegen": "wrangler types"
@@ -28,7 +28,9 @@
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^6.0.2",
+    "sharp": "^0.35.1",
     "tailwindcss": "^4.3.0",
+    "to-ico": "^1.1.5",
     "typescript": "^5.9.0",
     "vite": "^8.0.16",
     "wrangler": "^4.99.0"

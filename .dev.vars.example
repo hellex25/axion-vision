@@ -1,7 +1,9 @@
-# Copy to .dev.vars and fill in your values (never commit .dev.vars)
+# ȘABLON — copiază în `.dev.vars` (local, NICIODATĂ în git).
+# Pe GitHub trebuie să rămână doar acest fișier `.dev.vars.example`.
+# Fișierul real `.dev.vars` conține secrete și e ignorat de git.
 RESEND_API_KEY=re_your_key_here
 CONTACT_TO=daviddricu@gmail.com
 CONTACT_FROM=Project Axion <onboarding@resend.dev>
 
 # Canonical public URL (also used at build time for sitemap/robots)
-VITE_SITE_URL=https://axion-vision.workers.dev
+VITE_SITE_URL=https://projectaxion.ro

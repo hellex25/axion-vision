@@ -1,7 +1,7 @@
 import { writeFileSync, mkdirSync } from 'node:fs'
 import { join } from 'node:path'
 
-const siteUrl = (process.env.VITE_SITE_URL ?? 'https://axion-vision.workers.dev').replace(
+const siteUrl = (process.env.VITE_SITE_URL ?? 'https://projectaxion.ro').replace(
   /\/$/,
   '',
 )

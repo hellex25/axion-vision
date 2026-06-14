@@ -1,6 +1,6 @@
 /** Canonical site URL — override with VITE_SITE_URL at build time. */
 export const SITE_URL = (
-  import.meta.env.VITE_SITE_URL ?? 'https://axion-vision.workers.dev'
+  import.meta.env.VITE_SITE_URL ?? 'https://projectaxion.ro'
 ).replace(/\/$/, '')
 
 export const SITE_NAME = 'Project Axion'
