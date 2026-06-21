@@ -99,6 +99,9 @@ export function EuFundingNotice() {
               <p className="text-[10px] text-[#1a1a1a] sm:text-[11px]">
                 {cfg.shortDescription}
               </p>
+              <p className="text-[10px] text-[#555] sm:text-[11px]">
+                Contract {cfg.contractNumber}
+              </p>
             </div>
           </div>
 
