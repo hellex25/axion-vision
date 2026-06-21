@@ -106,7 +106,21 @@ function FeadrFundingPage() {
                 </p>
                 <p>
                   <strong>Beneficiar:</strong> {cfg.beneficiary}
+                  {cfg.cui ? ` (CUI ${cfg.cui})` : ''}
                 </p>
+                {cfg.isLeader && (
+                  <>
+                    <p>
+                      <strong>Finanțare LEADER — GAL:</strong> {cfg.galName}
+                    </p>
+                    <p>
+                      <strong>Apel:</strong> {cfg.callTitle}
+                    </p>
+                    <p>
+                      <strong>Intervenție:</strong> {cfg.intervention}
+                    </p>
+                  </>
+                )}
               </section>
 
               <section className="rounded-lg bg-[#eef4fb] p-5 text-sm leading-relaxed">
@@ -118,6 +132,7 @@ function FeadrFundingPage() {
                   din care{' '}
                   <strong>Finanțare nerambursabilă PS 2023 – 2027:</strong>{' '}
                   {formatEur(cfg.feadrFundingEur)}
+                  {cfg.fundingPercent === 100 ? ' (100%)' : ''}
                 </p>
               </section>
 

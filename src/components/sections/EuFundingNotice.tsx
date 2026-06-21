@@ -48,6 +48,11 @@ export function EuFundingNotice() {
               <br />
               <span className="font-semibold text-[#1a1a1a]">AFIR</span>
               <span className="block">MADR</span>
+              {cfg.isLeader && (
+                <span className="mt-1 block font-semibold text-[#1a1a1a]">
+                  LEADER
+                </span>
+              )}
             </p>
           </div>
 
@@ -72,6 +77,11 @@ export function EuFundingNotice() {
               <p>
                 <span className="font-bold">Beneficiar:</span> {cfg.beneficiary}
               </p>
+              {cfg.isLeader && (
+                <p>
+                  <span className="font-bold">GAL (LEADER):</span> {cfg.galName}
+                </p>
+              )}
             </div>
 
             <div className="space-y-1.5 rounded-md bg-[#eef4fb] p-3 text-[#003399]">
