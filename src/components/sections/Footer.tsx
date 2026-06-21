@@ -64,9 +64,17 @@ export function Footer() {
         </div>
 
         <div className="flex flex-col items-start justify-between gap-3 border-t border-hairline pt-6 sm:flex-row sm:items-center">
-          <span className="font-mono text-[0.7rem] tracking-wide text-dim">
-            {t.footer.legal}
-          </span>
+          <div className="flex flex-col gap-1">
+            <span className="font-mono text-[0.7rem] tracking-wide text-dim">
+              {t.footer.legal}
+            </span>
+            <a
+              href="/finantare-europeana"
+              className="text-[0.65rem] text-dim transition-colors hover:text-muted"
+            >
+              Finanțare europeană (PS 2023–2027)
+            </a>
+          </div>
           <span className="flex items-center gap-2 font-mono text-[0.7rem] text-muted">
             <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-signal" />
             {t.footer.status}

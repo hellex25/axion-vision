@@ -11,6 +11,7 @@ import { EngineRoom } from '~/components/sections/EngineRoom'
 import { ProtocolSecure } from '~/components/sections/ProtocolSecure'
 import { ContactForm } from '~/components/sections/ContactForm'
 import { Footer } from '~/components/sections/Footer'
+import { EuFundingNotice } from '~/components/sections/EuFundingNotice'
 import { SeoHead } from '~/components/SeoHead'
 
 export const Route = createFileRoute('/')({
@@ -25,6 +26,7 @@ function Home() {
         <div className="relative min-h-screen bg-void">
           <ScrollProgress />
           <Navbar />
+          <EuFundingNotice />
           <main>
             <Hero />
             <TechMatrix />

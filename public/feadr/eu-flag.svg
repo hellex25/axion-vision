@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 810 540" role="img" aria-label="Uniunea European">
+  <rect width="810" height="540" fill="#039"/>
+  <g fill="#FC0">
+    <g id="s"><path d="M405 90l11.4 35.1h36.9l-29.8 21.7 11.4 35.1L405 160.2l-34.9 21.7 11.4-35.1-29.8-21.7h36.9z"/></g>
+    <use href="#s" transform="rotate(30 405 270)"/>
+    <use href="#s" transform="rotate(60 405 270)"/>
+    <use href="#s" transform="rotate(90 405 270)"/>
+    <use href="#s" transform="rotate(120 405 270)"/>
+    <use href="#s" transform="rotate(150 405 270)"/>
+    <use href="#s" transform="rotate(180 405 270)"/>
+    <use href="#s" transform="rotate(210 405 270)"/>
+    <use href="#s" transform="rotate(240 405 270)"/>
+    <use href="#s" transform="rotate(270 405 270)"/>
+    <use href="#s" transform="rotate(300 405 270)"/>
+    <use href="#s" transform="rotate(330 405 270)"/>
+  </g>
+</svg>
