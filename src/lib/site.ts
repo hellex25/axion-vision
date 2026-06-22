@@ -8,3 +8,8 @@ export const COMPANY_NAME = 'Axion Vision SRL'
 export const CONTACT_EMAIL = 'daviddricu@gmail.com'
 export const DEFAULT_LOCALE = 'ro_RO'
 export const LOCALE_EN = 'en_US'
+
+/** Anchor pe homepage — evită /ruta-curenta#sectiune pe pagini secundare. */
+export function homeSectionHash(section: string) {
+  return `/#${section}`
+}

@@ -21,6 +21,8 @@ export interface Dictionary {
     engine: string
     security: string
     contact: string
+    funding: string
+    fundingTitle: string
     cta: string
   }
   services: {
@@ -116,6 +118,8 @@ const ro: Dictionary = {
     engine: 'Motorul',
     security: 'Securitate',
     contact: 'Contact',
+    funding: 'PS 2027',
+    fundingTitle: 'Informații finanțare europeană (PS 2023–2027)',
     cta: 'Contact',
   },
   hero: {
@@ -286,6 +290,8 @@ const en: Dictionary = {
     engine: 'Engine',
     security: 'Security',
     contact: 'Contact',
+    funding: 'PS 2027',
+    fundingTitle: 'EU funding information (CAP Strategic Plan 2023–2027)',
     cta: 'Contact',
   },
   hero: {
