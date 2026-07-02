@@ -1,31 +1,45 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { LanguageProvider } from '~/i18n/LanguageContext'
+import { JsonLd } from '~/components/JsonLd'
 import { Navbar } from '~/components/sections/Navbar'
 import { Footer } from '~/components/sections/Footer'
 import { FeadrSiteNotice } from '~/components/feadr/FeadrSiteNotice'
 import { feadrFundingConfig as cfg } from '~/config/feadrFunding'
+import type { SeoMeta } from '~/lib/seo'
+import { buildPageHead, buildWebPageJsonLd } from '~/lib/seo'
+
+const feadrMeta: SeoMeta = {
+  title: 'Finanțare europeană — Axion Vision SRL | Project Axion',
+  description:
+    'Informații privind finanțarea nerambursabilă prin Planul Strategic PAC 2023–2027 (PS 2023–2027) pentru proiectul Axion Vision SRL.',
+  keywords:
+    'finanțare europeană, FEADR, LEADER, PS 2027, Axion Vision, finanțare nerambursabilă',
+  ogTitle: 'Finanțare europeană — Axion Vision SRL',
+  ogDescription:
+    'Informații despre finanțarea europeană FEADR/LEADER pentru proiectul IT Axion Vision SRL.',
+  twitterTitle: 'Finanțare europeană | Axion Vision SRL',
+  twitterDescription:
+    'Detalii finanțare nerambursabilă PS 2023–2027 — Axion Vision SRL.',
+}
+
+const FEADR_PATH = '/finantare-europeana'
 
 export const Route = createFileRoute('/finantare-europeana')({
-  head: () => ({
-    meta: [
-      {
-        title: 'Finanțare europeană — Axion Vision SRL | Project Axion',
-      },
-      {
-        name: 'description',
-        content:
-          'Informații privind finanțarea nerambursabilă prin Planul Strategic PAC 2023–2027 (PS 2023–2027).',
-      },
-      { name: 'robots', content: 'index, follow' },
-    ],
-  }),
+  head: () => buildPageHead('ro', feadrMeta, FEADR_PATH),
   component: FeadrFundingPage,
 })
 
 function FeadrFundingPage() {
+  const jsonLd = buildWebPageJsonLd(
+    FEADR_PATH,
+    feadrMeta.title,
+    feadrMeta.description,
+  )
+
   if (!cfg.showNotice) {
     return (
       <LanguageProvider>
+        <JsonLd data={jsonLd} />
         <div className="min-h-screen bg-void">
           <Navbar />
           <main className="mx-auto max-w-3xl px-6 py-24 text-center">
@@ -42,8 +56,8 @@ function FeadrFundingPage() {
 
   return (
     <LanguageProvider>
+      <JsonLd data={jsonLd} />
       <div className="relative min-h-screen bg-void">
-        {/* Fundal estetic — aliniat cu site-ul */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-gradient-to-b from-void via-[#0a1424] to-void"

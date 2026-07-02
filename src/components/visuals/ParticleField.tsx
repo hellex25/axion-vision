@@ -152,12 +152,17 @@ export function ParticleField() {
       }
     }
 
+    const startAnimation = () => {
+      if (raf) return
+      raf = requestAnimationFrame(draw)
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         visible = entry.isIntersecting
-        if (visible && !raf) {
-          raf = requestAnimationFrame(draw)
-        } else if (!visible && raf) {
+        if (visible) {
+          startAnimation()
+        } else if (raf) {
           cancelAnimationFrame(raf)
           raf = 0
         }
@@ -166,9 +171,18 @@ export function ParticleField() {
     )
     observer.observe(canvas)
 
-    raf = requestAnimationFrame(draw)
+    const defer =
+      typeof requestIdleCallback === 'function'
+        ? requestIdleCallback
+        : (cb: () => void) => window.setTimeout(cb, 120)
+    const cancelDefer =
+      typeof cancelIdleCallback === 'function'
+        ? cancelIdleCallback
+        : clearTimeout
+    const deferId = defer(startAnimation)
 
     return () => {
+      cancelDefer(deferId as number)
       cancelAnimationFrame(raf)
       observer.disconnect()
       window.removeEventListener('resize', resize)

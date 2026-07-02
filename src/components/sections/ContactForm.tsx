@@ -4,6 +4,7 @@ import { Reveal } from '~/components/ui/Reveal'
 import { SectionLabel } from '~/components/ui/SectionLabel'
 import { useI18n } from '~/i18n/LanguageContext'
 import { cn } from '~/lib/cn'
+import { trackEvent } from '~/lib/analytics'
 import { sendContactEmail } from '~/server/contact'
 
 type Status = 'idle' | 'sending' | 'sent' | 'error'
@@ -39,6 +40,7 @@ export function ContactForm() {
       })
       setStatus('sent')
       form.reset()
+      trackEvent('generate_lead', { method: 'contact_form' })
       window.setTimeout(() => setStatus('idle'), 5000)
     } catch (err) {
       setStatus('error')

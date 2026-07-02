@@ -1,10 +1,10 @@
 import { Link } from '@tanstack/react-router'
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { cn } from '~/lib/cn'
 import { feadrFundingConfig } from '~/config/feadrFunding'
 import { useI18n } from '~/i18n/LanguageContext'
-import { homeSectionHash } from '~/lib/site'
+import { homeSectionHash, SERVICE_ROUTES } from '~/lib/site'
 import type { Lang } from '~/i18n/translations'
 
 const LANGS: Lang[] = ['ro', 'en']
@@ -33,6 +33,61 @@ function LanguageToggle() {
   )
 }
 
+function ServicesMenu() {
+  const { t } = useI18n()
+  const [open, setOpen] = useState(false)
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const items = [
+    { label: t.nav.servicesConsulting, to: SERVICE_ROUTES.consultantaIt },
+    { label: t.nav.servicesPortals, to: SERVICE_ROUTES.portaluriWeb },
+    { label: t.nav.servicesMaintenance, to: SERVICE_ROUTES.mentenantaIt },
+  ] as const
+
+  const handleEnter = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current)
+    setOpen(true)
+  }
+
+  const handleLeave = () => {
+    closeTimer.current = setTimeout(() => setOpen(false), 120)
+  }
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+    >
+      <a
+        href={homeSectionHash('services')}
+        className="group relative inline-flex items-center gap-1 text-sm text-muted transition-colors hover:text-ink"
+        aria-haspopup="true"
+        aria-expanded={open}
+      >
+        {t.nav.services}
+        <span className="font-mono text-[0.6rem] text-dim">▾</span>
+        <span className="absolute -bottom-1 left-0 h-px w-0 bg-gradient-to-r from-cyan to-purple transition-all duration-300 group-hover:w-full" />
+      </a>
+
+      {open && (
+        <div className="absolute left-0 top-full z-50 mt-2 min-w-[12rem] rounded-xl border border-hairline bg-void/95 py-2 shadow-xl backdrop-blur-xl">
+          {items.map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              className="block px-4 py-2 text-sm text-muted transition-colors hover:bg-panel hover:text-ink"
+              onClick={() => setOpen(false)}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export function Navbar() {
   const { t } = useI18n()
   const [scrolled, setScrolled] = useState(false)
@@ -44,7 +99,6 @@ export function Navbar() {
 
   const links = [
     { label: t.nav.capabilities, hash: 'capabilities' },
-    { label: t.nav.services, hash: 'services' },
     { label: t.nav.engine, hash: 'engine' },
     { label: t.nav.security, hash: 'security' },
     { label: t.nav.contact, hash: 'contact' },
@@ -75,7 +129,18 @@ export function Navbar() {
         </Link>
 
         <div className="hidden items-center gap-7 md:flex">
-          {links.map((link) => (
+          {links.slice(0, 1).map((link) => (
+            <a
+              key={link.hash}
+              href={homeSectionHash(link.hash)}
+              className="group relative text-sm text-muted transition-colors hover:text-ink"
+            >
+              {link.label}
+              <span className="absolute -bottom-1 left-0 h-px w-0 bg-gradient-to-r from-cyan to-purple transition-all duration-300 group-hover:w-full" />
+            </a>
+          ))}
+          <ServicesMenu />
+          {links.slice(1).map((link) => (
             <a
               key={link.hash}
               href={homeSectionHash(link.hash)}

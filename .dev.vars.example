@@ -7,3 +7,6 @@ CONTACT_FROM=Project Axion <onboarding@resend.dev>
 
 # Canonical public URL (also used at build time for sitemap/robots)
 VITE_SITE_URL=https://projectaxion.ro
+
+# Google Analytics 4 — optional; leave unset to disable client tracking
+# VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX

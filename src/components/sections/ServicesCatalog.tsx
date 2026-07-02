@@ -1,12 +1,20 @@
+import { Link } from '@tanstack/react-router'
 import { Globe, Layers, Wrench } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Reveal } from '~/components/ui/Reveal'
 import { GradientBorderCard } from '~/components/ui/GradientBorderCard'
 import { SectionLabel } from '~/components/ui/SectionLabel'
 import { useI18n } from '~/i18n/LanguageContext'
+import { SERVICE_ROUTES } from '~/lib/site'
 import { cn } from '~/lib/cn'
 
 const DOMAIN_ICONS: LucideIcon[] = [Layers, Globe, Wrench]
+
+const DOMAIN_ROUTES = [
+  SERVICE_ROUTES.consultantaIt,
+  SERVICE_ROUTES.portaluriWeb,
+  SERVICE_ROUTES.mentenantaIt,
+] as const
 
 export function ServicesCatalog() {
   const { t } = useI18n()
@@ -29,6 +37,7 @@ export function ServicesCatalog() {
         {t.services.domains.map((domain, i) => {
           const Icon = DOMAIN_ICONS[i]
           const isPrimary = i === 0
+          const route = DOMAIN_ROUTES[i]
           return (
             <Reveal key={domain.title} delay={i * 0.08}>
               <GradientBorderCard className="overflow-hidden">
@@ -58,12 +67,22 @@ export function ServicesCatalog() {
                     <p className="text-pretty text-sm leading-relaxed text-muted">
                       {domain.intro}
                     </p>
+                    <Link
+                      to={route}
+                      className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-cyan transition-colors hover:text-ink"
+                    >
+                      {t.services.learnMore}
+                      <span aria-hidden className="font-mono">
+                        →
+                      </span>
+                    </Link>
                   </div>
 
                   <ul
                     className={cn(
                       'grid gap-2 border-t border-hairline pt-6 sm:grid-cols-2',
-                      isPrimary && 'lg:flex-1 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-10',
+                      isPrimary &&
+                        'lg:flex-1 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-10',
                       !isPrimary && 'sm:grid-cols-2',
                     )}
                   >

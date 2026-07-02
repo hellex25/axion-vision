@@ -1,0 +1,7 @@
+[
+  { "path": "/", "changefreq": "weekly", "priority": "1.0" },
+  { "path": "/servicii/consultanta-it", "changefreq": "monthly", "priority": "0.9" },
+  { "path": "/servicii/portaluri-web", "changefreq": "monthly", "priority": "0.9" },
+  { "path": "/servicii/mentenanta-it", "changefreq": "monthly", "priority": "0.9" },
+  { "path": "/finantare-europeana", "changefreq": "monthly", "priority": "0.6" }
+]

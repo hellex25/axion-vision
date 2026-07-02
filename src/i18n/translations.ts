@@ -18,6 +18,9 @@ export interface Dictionary {
   nav: {
     capabilities: string
     services: string
+    servicesConsulting: string
+    servicesPortals: string
+    servicesMaintenance: string
     engine: string
     security: string
     contact: string
@@ -30,6 +33,7 @@ export interface Dictionary {
     titlePre: string
     titleHighlight: string
     sub: string
+    learnMore: string
     domains: {
       tier: string
       title: string
@@ -95,26 +99,34 @@ export interface Dictionary {
     submitError: string
     successNote: string
   }
-  footer: { legal: string; status: string }
+  footer: {
+    legal: string
+    status: string
+    servicesTitle: string
+    nap: string
+  }
 }
 
 const ro: Dictionary = {
   meta: {
-    title: 'Project Axion — Ecosisteme digitale de înaltă performanță | Axion Vision SRL',
+    title: 'Consultanță IT & Dezvoltare Web pentru Firme | Project Axion',
     description:
-      'Axion Vision SRL (Project Axion): consultanță IT, dezvoltare web full-stack, infrastructură cloud Cloudflare & Supabase, securitate cibernetică și automatizări. Soluții software scalabile pentru companii din România.',
+      'Consultanță IT, site-uri rapide și mentenanță pentru IMM-uri și firme din România. Cloud, securitate cibernetică și automatizări — Axion Vision SRL (Project Axion). Ofertă gratuită.',
     keywords:
-      'Axion Vision, Project Axion, consultanță IT România, dezvoltare web, infrastructură cloud, Cloudflare Workers, Supabase, securitate cibernetică, automatizări, portaluri web, mentenanță IT',
-    ogTitle: 'Project Axion — Ecosisteme digitale de înaltă performanță',
+      'consultanță IT firme, dezvoltare web România, mentenanță IT IMM, infrastructură cloud, securitate cibernetică, portaluri web, Axion Vision, Project Axion',
+    ogTitle: 'Consultanță IT & Dezvoltare Web pentru Firme — Project Axion',
     ogDescription:
-      'Consultanță IT, inginerie web de elită și infrastructură cloud suverană — Axion Vision SRL.',
-    twitterTitle: 'Project Axion | Axion Vision SRL',
+      'Consultanță IT, site-uri rapide și mentenanță pentru IMM-uri din România — Axion Vision SRL.',
+    twitterTitle: 'Consultanță IT pentru Firme | Project Axion',
     twitterDescription:
-      'Consultanță IT, dezvoltare web și infrastructură cloud pentru companii ambițioase.',
+      'Consultanță IT, dezvoltare web și mentenanță pentru firme din România.',
   },
   nav: {
     capabilities: 'Capabilități',
     services: 'Servicii',
+    servicesConsulting: 'Consultanță IT',
+    servicesPortals: 'Portaluri web',
+    servicesMaintenance: 'Mentenanță IT',
     engine: 'Motorul',
     security: 'Securitate',
     contact: 'Contact',
@@ -162,6 +174,7 @@ const ro: Dictionary = {
     titlePre: 'Trei domenii. ',
     titleHighlight: 'Acoperire completă.',
     sub: 'Consultanță TI, portaluri web de elită și întreținere echipamente — livrate cu același standard de inginerie, de la arhitectură la operare.',
+    learnMore: 'Află mai mult',
     domains: [
       {
         tier: 'Activitate principală',
@@ -267,26 +280,31 @@ const ro: Dictionary = {
   footer: {
     legal: '© 2026 AXION VISION SRL · TOATE SISTEMELE OPERAȚIONALE',
     status: 'SYS_STATUS: OPTIMAL',
+    servicesTitle: 'Servicii',
+    nap: 'Axion Vision SRL · Vârvoru de Jos, Dolj · daviddricu@gmail.com',
   },
 }
 
 const en: Dictionary = {
   meta: {
-    title: 'Project Axion — High-Performance Digital Ecosystems | Axion Vision SRL',
+    title: 'IT Consultancy & Web Development for Businesses | Project Axion',
     description:
-      'Axion Vision SRL (Project Axion): IT consultancy, full-stack web development, Cloudflare & Supabase cloud infrastructure, cybersecurity, and automation. Scalable software for ambitious businesses.',
+      'IT consultancy, fast websites and maintenance for SMEs in Romania. Cloud, cybersecurity and automation — Axion Vision SRL (Project Axion). Free quote.',
     keywords:
-      'Axion Vision, Project Axion, IT consultancy Romania, web development, cloud infrastructure, Cloudflare Workers, Supabase, cybersecurity, automation, web portals, IT maintenance',
-    ogTitle: 'Project Axion — High-Throughput Digital Ecosystems',
+      'IT consultancy Romania, web development, IT maintenance SME, cloud infrastructure, cybersecurity, web portals, Axion Vision, Project Axion',
+    ogTitle: 'IT Consultancy & Web Development — Project Axion',
     ogDescription:
-      'Elite web engineering, sovereign cloud infrastructure, and autonomous workflows — Axion Vision SRL.',
-    twitterTitle: 'Project Axion | Axion Vision SRL',
+      'IT consultancy, fast websites and maintenance for SMEs in Romania — Axion Vision SRL.',
+    twitterTitle: 'IT Consultancy for Businesses | Project Axion',
     twitterDescription:
-      'IT consultancy, web development, and cloud infrastructure for ambitious companies.',
+      'IT consultancy, web development and maintenance for companies in Romania.',
   },
   nav: {
     capabilities: 'Capabilities',
     services: 'Services',
+    servicesConsulting: 'IT consultancy',
+    servicesPortals: 'Web portals',
+    servicesMaintenance: 'IT maintenance',
     engine: 'Engine',
     security: 'Security',
     contact: 'Contact',
@@ -334,6 +352,7 @@ const en: Dictionary = {
     titlePre: 'Three domains. ',
     titleHighlight: 'Full coverage.',
     sub: 'IT consultancy, elite web portals and equipment maintenance — delivered with the same engineering standard, from architecture to operations.',
+    learnMore: 'Learn more',
     domains: [
       {
         tier: 'Primary activity',
@@ -439,6 +458,8 @@ const en: Dictionary = {
   footer: {
     legal: '© 2026 AXION VISION SRL · ALL SYSTEMS OPERATIONAL',
     status: 'SYS_STATUS: OPTIMAL',
+    servicesTitle: 'Services',
+    nap: 'Axion Vision SRL · Vârvoru de Jos, Dolj · daviddricu@gmail.com',
   },
 }
 

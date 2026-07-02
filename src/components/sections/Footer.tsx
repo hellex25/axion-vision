@@ -2,7 +2,7 @@ import { Link } from '@tanstack/react-router'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { useI18n } from '~/i18n/LanguageContext'
-import { homeSectionHash } from '~/lib/site'
+import { homeSectionHash, SERVICE_ROUTES } from '~/lib/site'
 
 export function Footer() {
   const { t } = useI18n()
@@ -14,12 +14,17 @@ export function Footer() {
   const watermarkY = useTransform(scrollYProgress, [0, 1], [110, 0])
   const watermarkOpacity = useTransform(scrollYProgress, [0, 1], [0, 1])
 
-  const links = [
+  const sectionLinks = [
     { label: t.nav.capabilities, hash: 'capabilities' },
-    { label: t.nav.services, hash: 'services' },
     { label: t.nav.engine, hash: 'engine' },
     { label: t.nav.security, hash: 'security' },
     { label: t.nav.contact, hash: 'contact' },
+  ] as const
+
+  const serviceLinks = [
+    { label: t.nav.servicesConsulting, to: SERVICE_ROUTES.consultantaIt },
+    { label: t.nav.servicesPortals, to: SERVICE_ROUTES.portaluriWeb },
+    { label: t.nav.servicesMaintenance, to: SERVICE_ROUTES.mentenantaIt },
   ] as const
 
   return (
@@ -27,7 +32,6 @@ export function Footer() {
       ref={ref}
       className="relative overflow-hidden border-t border-hairline"
     >
-      {/* Parallax watermark */}
       <motion.div
         aria-hidden
         style={{
@@ -41,7 +45,7 @@ export function Footer() {
       </motion.div>
 
       <div className="relative mx-auto flex max-w-6xl flex-col gap-8 px-6 py-14">
-        <div className="flex flex-col items-start justify-between gap-8 sm:flex-row sm:items-center">
+        <div className="flex flex-col gap-10 lg:flex-row lg:justify-between">
           <Link to="/" className="group flex items-center gap-2.5">
             <span className="text-gradient inline-block text-lg leading-none transition-transform duration-500 group-hover:rotate-[225deg]">
               ◇
@@ -51,24 +55,52 @@ export function Footer() {
             </span>
           </Link>
 
-          <nav className="flex flex-wrap gap-6">
-            {links.map((link) => (
-              <a
-                key={link.hash}
-                href={homeSectionHash(link.hash)}
-                className="group relative text-sm text-muted transition-colors hover:text-ink"
-              >
-                {link.label}
-                <span className="absolute -bottom-1 left-0 h-px w-0 bg-gradient-to-r from-cyan to-purple transition-all duration-300 group-hover:w-full" />
-              </a>
-            ))}
-          </nav>
+          <div className="flex flex-col gap-8 sm:flex-row sm:gap-16">
+            <nav aria-label="Site">
+              <p className="mb-3 font-mono text-[0.65rem] uppercase tracking-wider text-dim">
+                Site
+              </p>
+              <ul className="flex flex-col gap-2.5">
+                {sectionLinks.map((link) => (
+                  <li key={link.hash}>
+                    <a
+                      href={homeSectionHash(link.hash)}
+                      className="text-sm text-muted transition-colors hover:text-ink"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <nav aria-label={t.footer.servicesTitle}>
+              <p className="mb-3 font-mono text-[0.65rem] uppercase tracking-wider text-dim">
+                {t.footer.servicesTitle}
+              </p>
+              <ul className="flex flex-col gap-2.5">
+                {serviceLinks.map((link) => (
+                  <li key={link.to}>
+                    <Link
+                      to={link.to}
+                      className="text-sm text-muted transition-colors hover:text-ink"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
         </div>
 
         <div className="flex flex-col items-start justify-between gap-3 border-t border-hairline pt-6 sm:flex-row sm:items-center">
-          <span className="font-mono text-[0.7rem] tracking-wide text-dim">
-            {t.footer.legal}
-          </span>
+          <div className="flex flex-col gap-1">
+            <span className="font-mono text-[0.7rem] tracking-wide text-dim">
+              {t.footer.legal}
+            </span>
+            <span className="text-xs text-dim">{t.footer.nap}</span>
+          </div>
           <span className="flex items-center gap-2 font-mono text-[0.7rem] text-muted">
             <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-signal" />
             {t.footer.status}
