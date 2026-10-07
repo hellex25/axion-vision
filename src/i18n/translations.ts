@@ -103,6 +103,7 @@ export interface Dictionary {
     legal: string
     status: string
     servicesTitle: string
+    careers: string
     nap: string
   }
 }
@@ -281,6 +282,7 @@ const ro: Dictionary = {
     legal: '© 2026 AXION VISION SRL · TOATE SISTEMELE OPERAȚIONALE',
     status: 'SYS_STATUS: OPTIMAL',
     servicesTitle: 'Servicii',
+    careers: 'Cariere',
     nap: 'Axion Vision SRL · Vârvoru de Jos, Dolj · daviddricu@gmail.com',
   },
 }
@@ -459,6 +461,7 @@ const en: Dictionary = {
     legal: '© 2026 AXION VISION SRL · ALL SYSTEMS OPERATIONAL',
     status: 'SYS_STATUS: OPTIMAL',
     servicesTitle: 'Services',
+    careers: 'Careers',
     nap: 'Axion Vision SRL · Vârvoru de Jos, Dolj · daviddricu@gmail.com',
   },
 }
