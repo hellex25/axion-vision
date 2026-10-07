@@ -25,6 +25,13 @@ export const SERVICE_ROUTES = {
   mentenantaIt: '/servicii/mentenanta-it',
 } as const
 
+export const CAREERS_PATH = '/cariere'
+
+export const CAREER_ROUTES = {
+  asistentOperational: '/cariere/asistent-operational',
+  tehnicianSistemeInformatice: '/cariere/tehnician-sisteme-informatice',
+} as const
+
 export type SeoRoute = {
   path: string
   changefreq: string

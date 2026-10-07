@@ -265,6 +265,63 @@ export function buildServiceJsonLd(input: ServiceSchemaInput) {
   ]
 }
 
+export interface JobPostingSchemaInput {
+  pathname: string
+  title: string
+  description: string
+  datePosted: string
+  corCode: string
+  employmentType?: string
+}
+
+export function buildJobPostingJsonLd(input: JobPostingSchemaInput) {
+  const url = canonicalUrl(input.pathname)
+  const validThrough = new Date(input.datePosted)
+  validThrough.setMonth(validThrough.getMonth() + 6)
+
+  return [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'JobPosting',
+      '@id': `${url}#jobposting`,
+      title: input.title,
+      description: input.description,
+      datePosted: input.datePosted,
+      validThrough: validThrough.toISOString().slice(0, 10),
+      employmentType: input.employmentType ?? 'FULL_TIME',
+      hiringOrganization: {
+        '@type': 'Organization',
+        name: COMPANY_NAME,
+        sameAs: SITE_URL,
+        logo: `${SITE_URL}/favicon-192.png`,
+      },
+      jobLocation: {
+        '@type': 'Place',
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: 'nr. 108',
+          addressLocality: BUSINESS_ADDRESS.locality,
+          addressRegion: BUSINESS_ADDRESS.region,
+          postalCode: BUSINESS_ADDRESS.postalCode,
+          addressCountry: BUSINESS_ADDRESS.country,
+        },
+      },
+      identifier: {
+        '@type': 'PropertyValue',
+        name: 'COR',
+        value: input.corCode,
+      },
+      directApply: true,
+      url,
+    },
+    buildBreadcrumbJsonLd([
+      { name: 'Acasă', path: '/' },
+      { name: 'Cariere', path: '/cariere' },
+      { name: input.title, path: input.pathname },
+    ]),
+  ]
+}
+
 export function buildWebPageJsonLd(
   pathname: string,
   name: string,

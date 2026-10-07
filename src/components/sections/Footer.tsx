@@ -2,7 +2,7 @@ import { Link } from '@tanstack/react-router'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { useI18n } from '~/i18n/LanguageContext'
-import { homeSectionHash, SERVICE_ROUTES } from '~/lib/site'
+import { CAREERS_PATH, homeSectionHash, SERVICE_ROUTES } from '~/lib/site'
 
 export function Footer() {
   const { t } = useI18n()
@@ -71,6 +71,14 @@ export function Footer() {
                     </a>
                   </li>
                 ))}
+                <li>
+                  <Link
+                    to={CAREERS_PATH}
+                    className="text-sm text-muted transition-colors hover:text-ink"
+                  >
+                    {t.footer.careers}
+                  </Link>
+                </li>
               </ul>
             </nav>
 
