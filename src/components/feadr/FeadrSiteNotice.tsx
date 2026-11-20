@@ -118,7 +118,7 @@ function GovSeal() {
     <img
       src="/feadr/guvernul-romaniei.png"
       alt="Guvernul României"
-      className="h-[76px] w-[76px] shrink-0 object-contain sm:h-[96px] sm:w-[96px]"
+      className="h-[80px] w-[80px] shrink-0 object-contain sm:h-[96px] sm:w-[96px]"
     />
   )
 }
@@ -177,32 +177,28 @@ export function FeadrSiteNotice() {
         <MotifBand />
 
         {/* Antet */}
-        <header className="flex items-center gap-3 px-4 pb-3 pt-4 sm:gap-5 sm:px-7 sm:pt-5">
+        <header className="grid grid-cols-2 items-center gap-x-3 gap-y-3 px-4 pb-4 pt-3 sm:grid-cols-[auto_1fr_auto] sm:gap-5 sm:px-7 sm:pb-3 sm:pt-5">
           <GovSeal />
-          <div className="min-w-0 flex-1 text-center">
+          <img
+            src="/feadr/ue-cofinantat.png"
+            alt="Cofinanțat de Uniunea Europeană"
+            className="h-auto w-[140px] justify-self-end object-contain sm:order-3 sm:w-[150px]"
+          />
+          <div className="col-span-2 min-w-0 text-center sm:order-2 sm:col-span-1">
             <h2
-              className="text-base font-extrabold uppercase leading-tight sm:text-2xl"
+              className="text-xl font-extrabold uppercase leading-tight sm:text-2xl"
               style={{ color: EU_BLUE }}
             >
-              Planul Strategic PAC 2023 - 2027
+              Planul Strategic <br className="sm:hidden" />
+              PAC 2023 - 2027
             </h2>
             <div className="mx-auto my-1.5 h-px w-4/5" style={{ backgroundColor: EU_BLUE_LIGHT }} />
-            <p className="text-[10px] font-semibold leading-snug sm:text-sm" style={{ color: EU_BLUE }}>
+            <p className="text-xs font-semibold leading-snug sm:text-sm" style={{ color: EU_BLUE }}>
               Program cofinanțat de Uniunea Europeană prin Fondul European Agricol
               pentru Dezvoltare Rurală și de Guvernul României.
             </p>
           </div>
-          <img
-            src="/feadr/ue-cofinantat.png"
-            alt="Cofinanțat de Uniunea Europeană"
-            className="hidden h-auto w-[130px] shrink-0 object-contain sm:block sm:w-[150px]"
-          />
         </header>
-        <img
-          src="/feadr/ue-cofinantat.png"
-          alt="Cofinanțat de Uniunea Europeană"
-          className="mx-auto mb-2 h-auto w-[150px] object-contain sm:hidden"
-        />
 
         {/* Corp */}
         <div className="grid gap-5 px-4 pb-5 sm:grid-cols-[1.15fr_1fr] sm:gap-6 sm:px-7">
@@ -230,7 +226,7 @@ export function FeadrSiteNotice() {
                   {cfg.projectCode}
                 </span>
               </div>
-              <div className="grid grid-cols-[auto_1fr] gap-3 sm:grid-cols-[0.8fr_1.2fr]">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-[0.8fr_1.2fr]">
                 <Field label="Județ:" value={cfg.county} />
                 <Field label="Localitate:" value={cfg.locality} />
               </div>
