@@ -50,7 +50,6 @@ function MotifBand() {
   const tiles = 40
   return (
     <div aria-hidden className="overflow-hidden px-3 pt-3 sm:px-5">
-      <div className="h-px w-full" style={{ backgroundColor: EU_BLUE_LIGHT }} />
       <svg
         viewBox={`0 0 ${TOP_W * tiles} ${TOP_H}`}
         preserveAspectRatio="xMinYMid slice"
@@ -61,7 +60,6 @@ function MotifBand() {
           <PixelPath key={i} cells={TOP_CELLS} fill={EU_BLUE_LIGHT} dx={i * TOP_W} />
         ))}
       </svg>
-      <div className="h-px w-full" style={{ backgroundColor: EU_BLUE_LIGHT }} />
     </div>
   )
 }
