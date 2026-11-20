@@ -44,36 +44,14 @@ function ColorMotifs({ count = 5 }: { count?: number }) {
   )
 }
 
-/** Sigiliu rotund „Guvernul României”. */
+/** Sigla oficială a Guvernului României. */
 function GovSeal() {
   return (
-    <div
-      className="relative h-[76px] w-[76px] shrink-0 rounded-full sm:h-[92px] sm:w-[92px]"
-      style={{ backgroundColor: PURPLE }}
-    >
-      <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full" aria-hidden>
-        <defs>
-          <path id="seal-top" d="M 14 50 A 36 36 0 0 1 86 50" />
-          <path id="seal-bottom" d="M 12 50 A 38 38 0 0 0 88 50" />
-        </defs>
-        <circle cx="50" cy="50" r="27" fill="#fff" />
-        <text fill="#fff" fontSize="10" fontWeight="700" letterSpacing="1.5">
-          <textPath href="#seal-top" startOffset="50%" textAnchor="middle">
-            GUVERNUL
-          </textPath>
-        </text>
-        <text fill="#fff" fontSize="10" fontWeight="700" letterSpacing="1.5">
-          <textPath href="#seal-bottom" startOffset="50%" textAnchor="middle">
-            ROMÂNIEI
-          </textPath>
-        </text>
-      </svg>
-      <img
-        src="/feadr/stema-romaniei.png"
-        alt="Guvernul României"
-        className="absolute left-1/2 top-1/2 h-[40%] w-auto -translate-x-1/2 -translate-y-1/2 object-contain"
-      />
-    </div>
+    <img
+      src="/feadr/guvernul-romaniei.png"
+      alt="Guvernul României"
+      className="h-[76px] w-[76px] shrink-0 object-contain sm:h-[96px] sm:w-[96px]"
+    />
   )
 }
 
