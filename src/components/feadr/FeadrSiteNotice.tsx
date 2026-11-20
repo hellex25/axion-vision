@@ -6,41 +6,111 @@ import {
 const EU_BLUE = '#003399'
 const EU_BLUE_LIGHT = '#a9bce6'
 
-/** Bandă cu motiv tradițional (romb) — sus pe placă. */
+type Cell = [number, number]
+
+function cellsFrom(w: number, h: number, on: (x: number, y: number) => boolean) {
+  const out: Cell[] = []
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) if (on(x, y)) out.push([x, y])
+  return out
+}
+
+function PixelPath({ cells, fill, dx = 0 }: { cells: Cell[]; fill: string; dx?: number }) {
+  const d = cells.map(([x, y]) => `M${x + dx} ${y}h1v1h-1z`).join('')
+  return <path d={d} fill={fill} />
+}
+
+function cellsFromMap(rows: string[]) {
+  return cellsFrom(rows[0].length, rows.length, (x, y) => rows[y][x] === '#')
+}
+
+/*
+ * Motivul de sus: chenar în trepte cu romb în trepte în interior, legat de
+ * următorul printr-o mică „cruce” — ca pe placa AFIR.
+ */
+const TOP_MAP = [
+  '.....#########......',
+  '....###########.....',
+  '...###.......###....',
+  '..###...###...###...',
+  '.###...#####...###.#',
+  '###...##...##...###.',
+  '##...##..#..##...##.',
+  '###...##...##...###.',
+  '.###...#####...###.#',
+  '..###...###...###...',
+  '...###.......###....',
+  '....###########.....',
+  '.....#########......',
+]
+const TOP_W = TOP_MAP[0].length
+const TOP_H = TOP_MAP.length
+const TOP_CELLS = cellsFromMap(TOP_MAP)
+
 function MotifBand() {
+  const tiles = 40
   return (
-    <svg aria-hidden className="block h-5 w-full sm:h-6" preserveAspectRatio="none">
-      <defs>
-        <pattern id="feadr-motif" width="24" height="24" patternUnits="userSpaceOnUse">
-          <path
-            d="M12 2 L22 12 L12 22 L2 12 Z M12 7 L17 12 L12 17 L7 12 Z"
-            fill="none"
-            stroke={EU_BLUE_LIGHT}
-            strokeWidth="1.6"
-          />
-          <rect x="10.5" y="10.5" width="3" height="3" fill={EU_BLUE_LIGHT} />
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#feadr-motif)" />
-    </svg>
+    <div aria-hidden className="overflow-hidden px-3 pt-3 sm:px-5">
+      <div className="h-px w-full" style={{ backgroundColor: EU_BLUE_LIGHT }} />
+      <svg
+        viewBox={`0 0 ${TOP_W * tiles} ${TOP_H}`}
+        preserveAspectRatio="xMinYMid slice"
+        shapeRendering="crispEdges"
+        className="my-1.5 block h-[24px] w-full sm:h-[30px]"
+      >
+        {Array.from({ length: tiles }).map((_, i) => (
+          <PixelPath key={i} cells={TOP_CELLS} fill={EU_BLUE_LIGHT} dx={i * TOP_W} />
+        ))}
+      </svg>
+      <div className="h-px w-full" style={{ backgroundColor: EU_BLUE_LIGHT }} />
+    </div>
   )
 }
 
-/** Motive colorate din subsolul plăcii AFIR. */
-function ColorMotifs({ count = 5 }: { count?: number }) {
-  const colors = ['#e2342b', '#f4a71d', '#003399', '#2b9f48', '#1e6fb8', '#8a4b2a']
+/* Motivele din subsol: acolade în trepte „{” și „}”, colorate, ca pe placa AFIR. */
+const BRACE_MAP = [
+  '..####',
+  '.###..',
+  '.###..',
+  '###...',
+  '##....',
+  '###...',
+  '.###..',
+  '.###..',
+  '..####',
+]
+const BR_W = BRACE_MAP[0].length
+const BR_H = BRACE_MAP.length
+const LEFT_BRACE = cellsFromMap(BRACE_MAP)
+const RIGHT_BRACE: Cell[] = LEFT_BRACE.map(([x, y]) => [BR_W - 1 - x, y])
+
+const AFIR_COLORS = {
+  blue: '#2d4f9e',
+  green: '#3f6b45',
+  lime: '#a3b52a',
+  red: '#c0282d',
+  brown: '#6b4128',
+  yellow: '#e2a713',
+  orange: '#d9742a',
+}
+
+function Braces({ items }: { items: Array<['{' | '}', keyof typeof AFIR_COLORS]> }) {
+  const step = BR_W + 1
   return (
-    <span aria-hidden className="inline-flex items-center gap-1">
-      {Array.from({ length: count }).map((_, i) => (
-        <svg key={i} viewBox="0 0 20 20" className="h-4 w-4 sm:h-5 sm:w-5">
-          <path
-            d="M10 1 L13 4 L16 4 L16 7 L19 10 L16 13 L16 16 L13 16 L10 19 L7 16 L4 16 L4 13 L1 10 L4 7 L4 4 L7 4 Z M10 6 L6 10 L10 14 L14 10 Z"
-            fill={colors[i % colors.length]}
-            fillRule="evenodd"
-          />
-        </svg>
+    <svg
+      aria-hidden
+      viewBox={`0 0 ${items.length * step - 1} ${BR_H}`}
+      shapeRendering="crispEdges"
+      className="block h-6 w-auto shrink-0 sm:h-9"
+    >
+      {items.map(([kind, color], i) => (
+        <PixelPath
+          key={i}
+          cells={kind === '{' ? LEFT_BRACE : RIGHT_BRACE}
+          fill={AFIR_COLORS[color]}
+          dx={i * step}
+        />
       ))}
-    </span>
+    </svg>
   )
 }
 
@@ -230,28 +300,38 @@ export function FeadrSiteNotice() {
         </div>
 
         {/* Subsol */}
-        <footer
-          className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 border-t px-4 py-3 sm:justify-between sm:px-7"
-          style={{ borderColor: EU_BLUE_LIGHT }}
-        >
+        <footer className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 px-4 pb-4 pt-2 sm:flex-nowrap sm:justify-between sm:px-7">
           <span className="flex items-center gap-2">
-            <ColorMotifs count={2} />
-            <span className="text-xs font-bold sm:text-sm" style={{ color: EU_BLUE }}>
+            <Braces items={[['{', 'blue'], ['}', 'green'], ['{', 'lime']]} />
+            <span className="whitespace-nowrap text-sm font-bold sm:text-base" style={{ color: EU_BLUE }}>
               Împreună creștem satul românesc
             </span>
           </span>
-          <span className="hidden sm:inline">
-            <ColorMotifs count={6} />
+          <span className="hidden min-w-0 overflow-hidden md:block">
+            <Braces
+              items={[
+                ['}', 'red'],
+                ['{', 'brown'],
+                ['}', 'yellow'],
+                ['{', 'orange'],
+                ['}', 'blue'],
+                ['{', 'green'],
+                ['}', 'red'],
+                ['{', 'brown'],
+                ['}', 'yellow'],
+              ]}
+            />
           </span>
           <a
             href="https://www.afir.ro"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 text-xs font-bold hover:underline sm:text-sm"
+            className="flex items-center gap-2 text-sm font-bold hover:underline sm:text-base"
             style={{ color: EU_BLUE }}
           >
+            <Braces items={[['{', 'green']]} />
             www.afir.ro
-            <ColorMotifs count={2} />
+            <Braces items={[['}', 'red'], ['{', 'blue']]} />
           </a>
         </footer>
       </article>
