@@ -83,7 +83,7 @@ function FeadrFundingPage() {
         <div className="relative z-10">
           <Navbar />
           <main className="px-4 py-16 sm:px-6 sm:py-24">
-            <div className="mx-auto max-w-2xl">
+            <div className="mx-auto max-w-4xl">
               <Link
                 to="/"
                 className="mb-8 inline-flex items-center gap-1 text-sm text-muted transition-colors hover:text-cyan"
