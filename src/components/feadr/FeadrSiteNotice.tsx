@@ -3,8 +3,8 @@ import {
   formatEurPlain,
 } from '~/config/feadrFunding'
 
-const PURPLE = '#3b2a8a'
-const PURPLE_LIGHT = '#b9b0dc'
+const EU_BLUE = '#003399'
+const EU_BLUE_LIGHT = '#a9bce6'
 
 /** Bandă cu motiv tradițional (romb) — sus pe placă. */
 function MotifBand() {
@@ -15,10 +15,10 @@ function MotifBand() {
           <path
             d="M12 2 L22 12 L12 22 L2 12 Z M12 7 L17 12 L12 17 L7 12 Z"
             fill="none"
-            stroke={PURPLE_LIGHT}
+            stroke={EU_BLUE_LIGHT}
             strokeWidth="1.6"
           />
-          <rect x="10.5" y="10.5" width="3" height="3" fill={PURPLE_LIGHT} />
+          <rect x="10.5" y="10.5" width="3" height="3" fill={EU_BLUE_LIGHT} />
         </pattern>
       </defs>
       <rect width="100%" height="100%" fill="url(#feadr-motif)" />
@@ -28,7 +28,7 @@ function MotifBand() {
 
 /** Motive colorate din subsolul plăcii AFIR. */
 function ColorMotifs({ count = 5 }: { count?: number }) {
-  const colors = ['#e2342b', '#f4a71d', '#3b2a8a', '#2b9f48', '#1e6fb8', '#8a4b2a']
+  const colors = ['#e2342b', '#f4a71d', '#003399', '#2b9f48', '#1e6fb8', '#8a4b2a']
   return (
     <span aria-hidden className="inline-flex items-center gap-1">
       {Array.from({ length: count }).map((_, i) => (
@@ -66,14 +66,14 @@ function Field({
 }) {
   return (
     <div className="flex items-end gap-2">
-      <span className="shrink-0 text-xs font-bold sm:text-sm" style={{ color: PURPLE }}>
+      <span className="shrink-0 text-xs font-bold sm:text-sm" style={{ color: EU_BLUE }}>
         {label}
       </span>
       <span
         className={`min-w-0 flex-1 border-b-2 border-dotted pb-0.5 text-xs uppercase sm:text-sm ${
           bold ? 'font-bold' : ''
         }`}
-        style={{ borderColor: PURPLE_LIGHT, color: '#1a1a1a' }}
+        style={{ borderColor: EU_BLUE_LIGHT, color: '#1a1a1a' }}
       >
         {value || ' '}
       </span>
@@ -84,12 +84,12 @@ function Field({
 function DatePill({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center gap-2">
-      <span className="w-[76px] shrink-0 text-xs font-bold sm:text-sm" style={{ color: PURPLE }}>
+      <span className="w-[76px] shrink-0 text-xs font-bold sm:text-sm" style={{ color: EU_BLUE }}>
         {label}
       </span>
       <span
         className="flex-1 rounded-md px-3 py-1 text-center text-sm font-semibold tracking-wider text-white sm:text-base"
-        style={{ backgroundColor: PURPLE }}
+        style={{ backgroundColor: EU_BLUE }}
       >
         {value}
       </span>
@@ -114,12 +114,12 @@ export function FeadrSiteNotice() {
           <div className="min-w-0 flex-1 text-center">
             <h2
               className="text-base font-extrabold uppercase leading-tight sm:text-2xl"
-              style={{ color: PURPLE }}
+              style={{ color: EU_BLUE }}
             >
               Planul Strategic PAC 2023 - 2027
             </h2>
-            <div className="mx-auto my-1.5 h-px w-4/5" style={{ backgroundColor: PURPLE_LIGHT }} />
-            <p className="text-[10px] font-semibold leading-snug sm:text-sm" style={{ color: PURPLE }}>
+            <div className="mx-auto my-1.5 h-px w-4/5" style={{ backgroundColor: EU_BLUE_LIGHT }} />
+            <p className="text-[10px] font-semibold leading-snug sm:text-sm" style={{ color: EU_BLUE }}>
               Program cofinanțat de Uniunea Europeană prin Fondul European Agricol
               pentru Dezvoltare Rurală și de Guvernul României.
             </p>
@@ -140,24 +140,24 @@ export function FeadrSiteNotice() {
         <div className="grid gap-5 px-4 pb-5 sm:grid-cols-[1.15fr_1fr] sm:gap-6 sm:px-7">
           {/* Stânga */}
           <div className="flex flex-col gap-4">
-            <div className="space-y-3 rounded-xl border-2 p-3 sm:p-4" style={{ borderColor: PURPLE }}>
-              <p className="text-xs font-bold leading-snug sm:text-sm" style={{ color: PURPLE }}>
+            <div className="space-y-3 rounded-xl border-2 p-3 sm:p-4" style={{ borderColor: EU_BLUE }}>
+              <p className="text-xs font-bold leading-snug sm:text-sm" style={{ color: EU_BLUE }}>
                 Proiect finanțat cu fonduri nerambursabile prin Planul Strategic
                 PAC 2023 - 2027 (PS 2023 - 2027)
               </p>
               <p
                 className="border-b-2 border-dotted pb-1 text-xs font-bold uppercase leading-relaxed sm:text-sm"
-                style={{ borderColor: PURPLE_LIGHT, color: '#1a1a1a' }}
+                style={{ borderColor: EU_BLUE_LIGHT, color: '#1a1a1a' }}
               >
                 {cfg.projectName}
               </p>
               <div className="flex items-center gap-2">
-                <span className="shrink-0 text-xs font-bold sm:text-sm" style={{ color: PURPLE }}>
+                <span className="shrink-0 text-xs font-bold sm:text-sm" style={{ color: EU_BLUE }}>
                   Cod proiect:
                 </span>
                 <span
                   className="flex-1 break-all rounded-md px-3 py-1 font-mono text-xs tracking-wide text-white sm:text-sm"
-                  style={{ backgroundColor: PURPLE }}
+                  style={{ backgroundColor: EU_BLUE }}
                 >
                   {cfg.projectCode}
                 </span>
@@ -172,7 +172,7 @@ export function FeadrSiteNotice() {
 
             <div
               className="mt-auto space-y-2 rounded-xl p-4 text-white"
-              style={{ backgroundColor: PURPLE }}
+              style={{ backgroundColor: EU_BLUE }}
             >
               <div className="flex flex-wrap items-baseline justify-between gap-x-3">
                 <span className="text-xs font-semibold sm:text-sm">
@@ -198,7 +198,7 @@ export function FeadrSiteNotice() {
           {/* Dreapta */}
           <div className="flex flex-col gap-4">
             <div className="space-y-2">
-              <p className="text-xs font-bold sm:text-sm" style={{ color: PURPLE }}>
+              <p className="text-xs font-bold sm:text-sm" style={{ color: EU_BLUE }}>
                 Autoritatea Contractantă:
               </p>
               <img
@@ -209,7 +209,7 @@ export function FeadrSiteNotice() {
             </div>
 
             {cfg.isLeader && (
-              <div className="rounded-lg px-4 py-3 text-white" style={{ backgroundColor: PURPLE }}>
+              <div className="rounded-lg px-4 py-3 text-white" style={{ backgroundColor: EU_BLUE }}>
                 <p className="text-2xl font-extrabold leading-none tracking-wide">LEADER</p>
                 <p className="mt-1 text-[10px] leading-snug opacity-90 sm:text-xs">
                   Dezvoltarea locală plasată sub responsabilitatea comunității
@@ -232,11 +232,11 @@ export function FeadrSiteNotice() {
         {/* Subsol */}
         <footer
           className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 border-t px-4 py-3 sm:justify-between sm:px-7"
-          style={{ borderColor: PURPLE_LIGHT }}
+          style={{ borderColor: EU_BLUE_LIGHT }}
         >
           <span className="flex items-center gap-2">
             <ColorMotifs count={2} />
-            <span className="text-xs font-bold sm:text-sm" style={{ color: PURPLE }}>
+            <span className="text-xs font-bold sm:text-sm" style={{ color: EU_BLUE }}>
               Împreună creștem satul românesc
             </span>
           </span>
@@ -248,7 +248,7 @@ export function FeadrSiteNotice() {
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-xs font-bold hover:underline sm:text-sm"
-            style={{ color: PURPLE }}
+            style={{ color: EU_BLUE }}
           >
             www.afir.ro
             <ColorMotifs count={2} />
@@ -260,7 +260,7 @@ export function FeadrSiteNotice() {
       <section className="space-y-3 rounded-xl bg-white p-4 text-sm leading-relaxed text-[#1a1a1a] shadow-xl shadow-black/20 sm:p-6">
         <p>{cfg.shortDescription}</p>
         <p>
-          <span className="font-bold" style={{ color: PURPLE }}>
+          <span className="font-bold" style={{ color: EU_BLUE }}>
             Scopuri și rezultate:
           </span>{' '}
           {cfg.goalsAndResults}
@@ -270,7 +270,7 @@ export function FeadrSiteNotice() {
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 font-bold underline-offset-2 hover:underline"
-          style={{ color: PURPLE }}
+          style={{ color: EU_BLUE }}
         >
           Informații FEADR — Comisia Europeană ↗
         </a>
