@@ -3,7 +3,7 @@ import { LanguageProvider } from '~/i18n/LanguageContext'
 import { JsonLd } from '~/components/JsonLd'
 import { Navbar } from '~/components/sections/Navbar'
 import { Footer } from '~/components/sections/Footer'
-import { FeadrSiteNotice } from '~/components/feadr/FeadrSiteNotice'
+import { FeadrProjectDetails } from '~/components/feadr/FeadrSiteNotice'
 import { feadrFundingConfig as cfg } from '~/config/feadrFunding'
 import type { SeoMeta } from '~/lib/seo'
 import { buildPageHead, buildWebPageJsonLd } from '~/lib/seo'
@@ -90,7 +90,7 @@ function FeadrFundingPage() {
               >
                 ← Project Axion
               </Link>
-              <FeadrSiteNotice />
+              <FeadrProjectDetails />
             </div>
           </main>
           <Footer />

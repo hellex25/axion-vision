@@ -7,6 +7,8 @@ import { ScrollProgress } from '~/components/ui/ScrollProgress'
 import { SectionDivider } from '~/components/ui/SectionDivider'
 import { Navbar } from '~/components/sections/Navbar'
 import { Hero } from '~/components/sections/Hero'
+import { FeadrPlaque } from '~/components/feadr/FeadrSiteNotice'
+import { feadrFundingConfig } from '~/config/feadrFunding'
 import { TechMatrix } from '~/components/sections/TechMatrix'
 import { ServicesCatalog } from '~/components/sections/ServicesCatalog'
 import { EngineRoom } from '~/components/sections/EngineRoom'
@@ -33,6 +35,16 @@ function Home() {
           <ScrollProgress />
           <Navbar />
           <main>
+            {feadrFundingConfig.showNotice && (
+              <section
+                aria-label="Finanțare europeană"
+                className="relative z-10 px-4 pb-4 pt-24 sm:px-6 sm:pt-28"
+              >
+                <div className="mx-auto max-w-4xl">
+                  <FeadrPlaque />
+                </div>
+              </section>
+            )}
             <Hero />
             <TechMatrix />
             <SectionDivider />
