@@ -49,6 +49,16 @@ for (let i = 0; i < sheets.length; i++) {
     clip: { x: box.x + b, y: box.y + b, width: box.width - 2 * b, height: box.height - 2 * b },
   })
 }
+
+// Imagini la 300 dpi, cu bleed, fără linii de pliere (pentru tipografii care cer JPG)
+const hi = await browser.newPage({ deviceScaleFactor: 300 / 96 })
+await hi.goto('file://' + tmp, { waitUntil: 'networkidle' })
+await hi.evaluate(() => document.fonts.ready)
+const hiSheets = await hi.$$('.sheet')
+for (let i = 0; i < hiSheets.length; i++) {
+  await hiSheets[i].screenshot({ path: join(dir, `pliant-${names[i]}-300dpi.jpg`), type: 'jpeg', quality: 95 })
+}
+
 await browser.close()
 unlinkSync(tmp)
 console.log('OK')
