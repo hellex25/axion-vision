@@ -9,404 +9,411 @@
   Canate: 100 / 100 / 97 mm (canatul care se pliază în interior e cu 3 mm mai îngust)
   Pagina 1 = EXTERIOR  [ canat interior pliat 97 | spate 100 | copertă 100 ]
   Pagina 2 = INTERIOR  [ 01 · 100 | 02 · 100 | 03 · 97 ]
+  Coordonatele SVG de fundal sunt în mm, pe pagina cu bleed (0–303 × 0–216).
 -->
 <style>
+  @font-face { font-family: Geist; src: url(fonts/Geist-Light.woff2); font-weight: 300; }
   @font-face { font-family: Geist; src: url(fonts/Geist-Regular.woff2); font-weight: 400; }
   @font-face { font-family: Geist; src: url(fonts/Geist-Medium.woff2); font-weight: 500; }
   @font-face { font-family: Geist; src: url(fonts/Geist-SemiBold.woff2); font-weight: 600; }
   @font-face { font-family: Geist; src: url(fonts/Geist-Bold.woff2); font-weight: 700; }
-  @font-face { font-family: GeistMono; src: url(fonts/GeistMono-Regular.woff2); font-weight: 400; }
-  @font-face { font-family: GeistMono; src: url(fonts/GeistMono-Medium.woff2); font-weight: 500; }
 
   :root {
-    --void: #050506;
-    --panel: #0b0b0e;
-    --hair: #24242c;
-    --cyan: #00f0ff;
-    --purple: #8a2be2;
-    --signal: #1aff8c;
-    --ink: #f4f4f5;
-    --muted: #a1a1aa;
-    --dim: #6b6b75;
-    /* interior (hârtie albă) */
-    --p-ink: #0d0d12;
-    --p-body: #3a3a44;
-    --p-dim: #7a7a86;
-    --p-line: #dcdce3;
-    --teal: #0086a8;
-    --violet: #6a1fc0;
-    --grad: linear-gradient(100deg, var(--cyan), var(--purple));
-    --grad-print: linear-gradient(100deg, #00b8d4, #7a24d6);
+    --night: #0d0b22;      /* indigo foarte închis — mai bogat la tipar decât negrul pur */
+    --night-2: #16123a;
+    --violet: #6d28d9;
+    --violet-soft: #a78bfa;
+    --cyan: #14c4dc;
+    --lilac: #f1ecfc;
+    --mist: #e7f6f9;
+    --ink: #121026;
+    --body: #4a4760;
+    --faint: #8c89a3;
+    --line: #e3e0ee;
+    --on-dark: #f5f3ff;
+    --on-dark-2: #b9b3d9;
+    --grad: linear-gradient(100deg, var(--cyan), var(--violet));
   }
 
   @page { size: 303mm 216mm; margin: 0; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { background: #777; }
-  body {
-    font-family: Geist, sans-serif;
-    -webkit-print-color-adjust: exact; print-color-adjust: exact;
-    font-feature-settings: "ss01", "kern";
-  }
+  body { font-family: Geist, sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; color: var(--ink); }
 
-  .sheet {
-    position: relative;
-    width: 303mm; height: 216mm;
-    overflow: hidden;
-    break-after: page;
-  }
+  .sheet { position: relative; width: 303mm; height: 216mm; overflow: hidden; background: #fff; break-after: page; }
   .sheet:last-child { break-after: auto; }
-  .exterior { background: var(--void); color: var(--ink); }
-  .interior { background: #ffffff; color: var(--p-ink); }
+  .bg { position: absolute; inset: 0; width: 303mm; height: 216mm; }
 
-  /* panouri poziționate în zona de tăiere (offset bleed 3 mm) */
-  .panel {
-    position: absolute; top: 3mm; height: 210mm;
-    padding: 11mm 8mm 9mm;
-    display: flex; flex-direction: column;
-  }
+  .panel { position: absolute; top: 3mm; height: 210mm; padding: 12mm 9mm 10mm; display: flex; flex-direction: column; }
   .w100 { width: 100mm; } .w97 { width: 97mm; }
+  .dark { color: var(--on-dark); }
 
-  /* ---------- decor exterior ---------- */
-  .grid {
-    position: absolute; inset: 0;
-  }
-  .glow {
-    position: absolute; border-radius: 50%;
-    pointer-events: none;
-  }
-  .mono { font-family: GeistMono, monospace; }
-  .kicker {
-    font-family: GeistMono, monospace; font-size: 6.6pt; letter-spacing: .16em;
-    text-transform: uppercase; color: var(--cyan);
-  }
-  .grad-text {
-    background: var(--grad); -webkit-background-clip: text; background-clip: text;
-    color: transparent;
-  }
+  /* etichetă: liniuță în gradient + text spațiat */
+  .label { display: flex; align-items: center; gap: 2.4mm; font-size: 6pt; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--violet); }
+  .label::before { content: ""; width: 7mm; height: .7mm; border-radius: 1mm; background: var(--grad); }
+  .dark .label { color: var(--cyan); }
+  .grad-text { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
-  /* ---------- COPERTĂ ---------- */
-  .cover { left: 200mm; padding-top: 12mm; }
-  .brand { display: flex; align-items: center; gap: 3mm; }
-  .brand svg { width: 10mm; height: 10mm; }
-  .brand .name { font-family: GeistMono, monospace; font-weight: 500; font-size: 8.6pt; letter-spacing: .24em; }
-  .brand .sub { font-family: GeistMono, monospace; font-size: 5.8pt; letter-spacing: .14em; color: var(--muted); margin-top: .8mm; }
+  /* ================= COPERTĂ ================= */
+  .cover { left: 200mm; }
+  .brand { display: flex; align-items: center; gap: 2.6mm; }
+  .brand svg { width: 8.5mm; height: 8.5mm; }
+  .brand b { display: block; font-size: 8.4pt; font-weight: 600; letter-spacing: .22em; }
+  .brand span { display: block; font-size: 5.6pt; letter-spacing: .2em; color: var(--on-dark-2); margin-top: .5mm; }
+  .cover h1 { margin-top: 17mm; font-size: 26pt; line-height: 1.02; letter-spacing: -.038em; font-weight: 600; }
+  .cover h1 em { font-style: normal; font-weight: 300; color: var(--on-dark-2); }
+  .cover .lead { margin-top: 5mm; font-size: 8.4pt; line-height: 1.5; color: var(--on-dark-2); max-width: 74mm; }
+  .services-line { margin-top: 5mm; display: flex; flex-direction: column; gap: 1.6mm; }
+  .services-line span { font-size: 7.4pt; font-weight: 500; display: flex; align-items: center; gap: 2mm; }
+  .services-line span::before { content: ""; width: 1.6mm; height: 1.6mm; transform: rotate(45deg); background: var(--cyan); }
+  .cover .bottom { margin-top: auto; }
+  .cover .url { font-size: 13pt; font-weight: 600; letter-spacing: -.01em; }
+  .cover .tag { font-size: 6.6pt; color: var(--on-dark-2); margin-top: 1mm; letter-spacing: .04em; }
 
-  .cover .hero { margin-top: 30mm; }
-  .cover h1 {
-    font-size: 25pt; line-height: 1.04; letter-spacing: -.035em; font-weight: 600;
-    margin-top: 4mm;
-  }
-  .cover .lead { font-size: 8.6pt; line-height: 1.5; color: var(--muted); margin-top: 5mm; max-width: 78mm; }
-  .chips { display: flex; flex-wrap: wrap; gap: 1.6mm; margin-top: 7mm; }
-  .chip {
-    font-family: GeistMono, monospace; font-size: 6.2pt; letter-spacing: .06em;
-    border: .25mm solid #34343d; border-radius: 10mm; padding: 1.3mm 2.8mm; color: var(--ink);
-    background: rgba(255,255,255,.03);
-  }
-  .chip i { font-style: normal; color: var(--cyan); margin-right: 1.2mm; }
-  .cover .foot { margin-top: auto; }
-  .status {
-    font-family: GeistMono, monospace; font-size: 5.6pt; letter-spacing: .1em; color: var(--dim);
-    display: flex; align-items: center; gap: 1.8mm;
-  }
-  .dot { width: 1.6mm; height: 1.6mm; border-radius: 50%; background: var(--signal); display: inline-block; }
-  .url-big { font-family: GeistMono, monospace; font-size: 11pt; font-weight: 500; letter-spacing: .04em; margin-top: 2.6mm; }
-  .watermark {
-    position: absolute; left: 200mm; bottom: -9mm; width: 103mm; text-align: center;
-    font-family: GeistMono, monospace; font-weight: 500; font-size: 64pt; letter-spacing: -.04em;
-    color: transparent; -webkit-text-stroke: .22mm rgba(255,255,255,.08);
-  }
-
-  /* ---------- CANAT PLIAT (exterior stânga) ---------- */
+  /* ================= CANAT PLIAT (închis) ================= */
   .flap { left: 3mm; }
-  .h2 { font-size: 15.5pt; line-height: 1.08; letter-spacing: -.03em; font-weight: 600; margin-top: 3mm; }
-  .flap .intro { font-size: 7.6pt; line-height: 1.5; color: var(--muted); margin-top: 3.5mm; }
-  .pillars { margin-top: 6mm; display: flex; flex-direction: column; gap: 4.6mm; }
-  .pillar { display: grid; grid-template-columns: 7mm 1fr; gap: 2.4mm; }
-  .pillar .n { font-family: GeistMono, monospace; font-size: 6.4pt; color: var(--cyan); padding-top: .6mm; }
-  .pillar h3 { font-size: 8.6pt; font-weight: 600; letter-spacing: -.01em; }
-  .pillar p { font-size: 7pt; line-height: 1.45; color: var(--muted); margin-top: 1mm; }
-  .stats {
-    margin-top: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 0;
-    border-top: .25mm solid var(--hair); border-left: .25mm solid var(--hair);
-  }
-  .stat { border-right: .25mm solid var(--hair); border-bottom: .25mm solid var(--hair); padding: 3mm 3mm 2.6mm; }
-  .stat b { display: block; font-size: 14pt; font-weight: 600; letter-spacing: -.03em; }
-  .stat span { font-family: GeistMono, monospace; font-size: 5.4pt; letter-spacing: .08em; color: var(--muted); text-transform: uppercase; }
+  .flap h2 { margin-top: 4mm; font-size: 17pt; line-height: 1.06; letter-spacing: -.032em; font-weight: 600; }
+  .reasons { margin-top: 7mm; display: flex; flex-direction: column; }
+  .reason { display: grid; grid-template-columns: 8mm 1fr; padding: 3.2mm 0; border-top: .25mm solid rgba(255,255,255,.12); }
+  .reason .n { font-size: 7pt; font-weight: 600; }
+  .reason h3 { font-size: 8.6pt; font-weight: 600; letter-spacing: -.01em; }
+  .reason p { font-size: 7pt; line-height: 1.45; color: var(--on-dark-2); margin-top: .8mm; }
+  .stats { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr; row-gap: 5mm; column-gap: 4mm; }
+  .stat b { display: block; font-size: 19pt; font-weight: 300; letter-spacing: -.04em; line-height: 1; }
+  .stat span { display: block; font-size: 6.2pt; color: var(--on-dark-2); margin-top: 1.4mm; line-height: 1.3; }
 
-  /* ---------- SPATE / CONTACT ---------- */
+  /* ================= SPATE (alb) ================= */
   .back { left: 100mm; }
-  .back .h2 { font-size: 21pt; }
-  .back .intro { font-size: 7.8pt; line-height: 1.5; color: var(--muted); margin-top: 3.5mm; }
-  .contact-list { margin-top: 6mm; display: flex; flex-direction: column; gap: 3.4mm; }
-  .c-row { display: grid; grid-template-columns: 6mm 1fr; align-items: start; gap: 2mm; }
-  .c-row svg { width: 4.2mm; height: 4.2mm; margin-top: .4mm; }
-  .c-row .lbl { font-family: GeistMono, monospace; font-size: 5.4pt; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
-  .c-row .val { font-size: 8.8pt; font-weight: 500; margin-top: .4mm; }
-  .c-row .val small { display: block; font-size: 6.6pt; font-weight: 400; color: var(--muted); margin-top: .4mm; }
-  .qr-box {
-    margin-top: 6mm; display: flex; align-items: center; gap: 4mm;
-    border: .25mm solid var(--hair); border-radius: 3mm; padding: 3mm; background: rgba(255,255,255,.025);
-  }
-  .qr { width: 21mm; height: 21mm; background: #fff; border-radius: 1.6mm; padding: 1.8mm; flex-shrink: 0; }
+  .back h2 { margin-top: 4mm; font-size: 20pt; line-height: 1.04; letter-spacing: -.035em; font-weight: 600; }
+  .back .intro { margin-top: 3.6mm; font-size: 7.8pt; line-height: 1.5; color: var(--body); }
+  .contacts { margin-top: 6mm; display: flex; flex-direction: column; gap: 3.6mm; }
+  .ct { display: grid; grid-template-columns: 8.5mm 1fr; gap: 2.6mm; align-items: center; }
+  .ct .ic { width: 8.5mm; height: 8.5mm; border-radius: 50%; background: var(--lilac); display: grid; place-items: center; }
+  .ct .ic svg { width: 4.2mm; height: 4.2mm; }
+  .ct small { display: block; font-size: 5.6pt; letter-spacing: .18em; text-transform: uppercase; color: var(--faint); font-weight: 500; }
+  .ct b { display: block; font-size: 8.8pt; font-weight: 600; margin-top: .3mm; letter-spacing: -.01em; }
+  .ct i { display: block; font-style: normal; font-size: 6.4pt; color: var(--body); margin-top: .3mm; }
+  .qr-row { margin-top: 6mm; display: flex; gap: 4mm; align-items: center; padding: 3.4mm; border-radius: 3mm; background: var(--lilac); }
+  .qr { width: 20mm; height: 20mm; flex-shrink: 0; background: #fff; border-radius: 1.6mm; padding: 1.6mm; }
   .qr svg { width: 100%; height: 100%; display: block; }
-  .qr-box p { font-size: 7pt; line-height: 1.45; color: var(--muted); }
-  .qr-box p b { color: var(--ink); font-weight: 600; display: block; font-size: 8pt; margin-bottom: 1mm; }
-  .funding {
-    margin-top: auto; background: #fff; color: #1a1a1a; border-radius: 2mm;
-    padding: 2.6mm 3mm 2.4mm;
-  }
-  .logos { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1.6mm 3.2mm; }
+  .qr-row b { display: block; font-size: 8.4pt; font-weight: 600; letter-spacing: -.01em; }
+  .qr-row p { font-size: 6.8pt; line-height: 1.45; color: var(--body); margin-top: .8mm; }
+  .funding { margin-top: auto; padding-top: 3.4mm; border-top: .25mm solid var(--line); }
+  .logos { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1.8mm 3.4mm; }
   .logos img { display: block; object-fit: contain; }
-  .funding p { font-size: 4.9pt; line-height: 1.35; color: #333; margin-top: 1.8mm; text-align: center; }
-  .legal { font-family: GeistMono, monospace; font-size: 5.2pt; letter-spacing: .08em; color: var(--dim); margin-top: 2.6mm; text-align: center; }
+  .funding p { font-size: 4.9pt; line-height: 1.4; color: var(--body); margin-top: 2mm; text-align: center; }
+  .legal { font-size: 5.2pt; letter-spacing: .12em; color: var(--faint); margin-top: 2.4mm; text-align: center; text-transform: uppercase; }
 
-  /* ---------- INTERIOR ---------- */
-  .interior .panel { padding: 11mm 8mm 9mm; }
+  /* ================= INTERIOR ================= */
   .i1 { left: 3mm; } .i2 { left: 103mm; } .i3 { left: 203mm; }
-  .band { position: absolute; left: 0; right: 0; top: 0; height: 6mm; background: var(--grad-print); }
-  .band-bottom { position: absolute; left: 0; right: 0; bottom: 0; height: 13mm; background: #0b0b0e; }
-  .svc-head { display: flex; align-items: baseline; justify-content: space-between; margin-top: 2mm; }
-  .svc-num { font-family: GeistMono, monospace; font-size: 26pt; font-weight: 500; letter-spacing: -.04em; line-height: 1;
-             background: var(--grad-print); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .tier { font-family: GeistMono, monospace; font-size: 5.6pt; letter-spacing: .14em; text-transform: uppercase; color: var(--p-dim);
-          border: .25mm solid var(--p-line); border-radius: 10mm; padding: 1mm 2.2mm; }
-  .interior h2 { font-size: 14.5pt; line-height: 1.1; letter-spacing: -.028em; font-weight: 600; margin-top: 4.5mm; }
-  .interior .intro { font-size: 7.6pt; line-height: 1.5; color: var(--p-body); margin-top: 3mm; }
-  .sub-k { font-family: GeistMono, monospace; font-size: 5.8pt; letter-spacing: .16em; text-transform: uppercase; color: var(--teal); margin-top: 5.5mm; }
-  ul.ticks { list-style: none; margin-top: 2.6mm; display: flex; flex-direction: column; gap: 2.2mm; }
-  ul.ticks li { position: relative; padding-left: 4.4mm; font-size: 7.6pt; line-height: 1.38; color: var(--p-ink); }
-  ul.ticks li::before {
-    content: ""; position: absolute; left: 0; top: 1.15mm; width: 2.2mm; height: 2.2mm; border-radius: .5mm;
-    background: var(--grad-print);
-  }
-  ul.aud { list-style: none; margin-top: 2.2mm; border-top: .25mm solid var(--p-line); }
-  ul.aud li { font-size: 7pt; line-height: 1.35; color: var(--p-body); padding: 1.7mm 0 1.7mm 5mm; border-bottom: .25mm solid var(--p-line); position: relative; }
-  ul.aud li::before { content: "→"; position: absolute; left: 0; color: var(--violet); font-family: GeistMono, monospace; }
-  .callout {
-    margin-top: auto; margin-bottom: 9mm; border-radius: 2.4mm; padding: 3mm 3.4mm;
-    background: #f3f4f8; border-left: 1mm solid var(--violet);
-  }
-  .callout b { display: block; font-size: 10.5pt; letter-spacing: -.02em; font-weight: 600; color: var(--p-ink); }
-  .callout span { display: block; font-size: 6.6pt; line-height: 1.4; color: var(--p-body); margin-top: .8mm; }
-  .footline {
-    position: absolute; left: 8mm; right: 8mm; bottom: 4.2mm;
-    font-family: GeistMono, monospace; font-size: 5.4pt; letter-spacing: .12em; text-transform: uppercase;
-    color: #9c9ca8; display: flex; justify-content: space-between; align-items: center;
-  }
-  .footline em { font-style: normal; color: var(--cyan); }
+  .illu { height: 55mm; border-radius: 4mm; overflow: hidden; flex-shrink: 0; }
+  .illu svg { width: 100%; height: 100%; display: block; }
+  .svc-label { margin-top: 7mm; }
+  .interior h2 { margin-top: 3mm; font-size: 17pt; line-height: 1.04; letter-spacing: -.035em; font-weight: 600; }
+  .interior .intro { margin-top: 3.4mm; font-size: 7.5pt; line-height: 1.52; color: var(--body); }
+  .dark .intro { color: var(--on-dark-2); }
+  ul.list { list-style: none; margin-top: 4.5mm; border-top: .25mm solid var(--line); }
+  ul.list li { font-size: 7.4pt; line-height: 1.3; padding: 1.85mm 0 1.85mm 5mm; border-bottom: .25mm solid var(--line); position: relative; }
+  ul.list li::before { content: ""; position: absolute; left: .4mm; top: 2.75mm; width: 1.5mm; height: 1.5mm; transform: rotate(45deg); background: var(--grad); }
+  .dark ul.list, .dark ul.list li { border-color: rgba(255,255,255,.13); }
+  .promise { margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between; gap: 3mm; }
+  .promise b { display: block; font-size: 11pt; font-weight: 600; letter-spacing: -.02em; line-height: 1.15; }
+  .promise div span { display: block; font-size: 6.6pt; color: var(--body); margin-top: 1mm; line-height: 1.4; }
+  .dark .promise div span { color: var(--on-dark-2); }
+  .arrow { width: 9mm; height: 9mm; flex-shrink: 0; border-radius: 50%; background: var(--grad); display: grid; place-items: center; }
+  .arrow svg { width: 4mm; height: 4mm; }
 </style>
 </head>
 <body>
 
-<!-- ======================= PAGINA 1 — EXTERIOR ======================= -->
+<!-- ============================== EXTERIOR ============================== -->
 <section class="sheet exterior">
-  <!-- grilă de puncte (vector) -->
-  <svg class="grid" width="303mm" height="216mm" viewBox="0 0 303 216" preserveAspectRatio="none">
+  <svg class="bg" viewBox="0 0 303 216" preserveAspectRatio="none">
     <defs>
-      <pattern id="dots" width="6" height="6" patternUnits="userSpaceOnUse">
-        <circle cx="1" cy="1" r=".28" fill="#ffffff" fill-opacity=".09"/>
-      </pattern>
-      <radialGradient id="g1" cx="0.5" cy="0.5" r="0.5">
-        <stop offset="0" stop-color="#00f0ff" stop-opacity=".22"/>
-        <stop offset="1" stop-color="#00f0ff" stop-opacity="0"/>
-      </radialGradient>
-      <radialGradient id="g2" cx="0.5" cy="0.5" r="0.5">
-        <stop offset="0" stop-color="#8a2be2" stop-opacity=".30"/>
-        <stop offset="1" stop-color="#8a2be2" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#050506" stop-opacity="0"/>
-        <stop offset="1" stop-color="#050506" stop-opacity=".9"/>
-      </linearGradient>
+      <radialGradient id="cv1" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#7c3aed" stop-opacity=".85"/><stop offset="1" stop-color="#7c3aed" stop-opacity="0"/></radialGradient>
+      <radialGradient id="cv2" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#14c4dc" stop-opacity=".55"/><stop offset="1" stop-color="#14c4dc" stop-opacity="0"/></radialGradient>
+      <radialGradient id="cv3" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#2e1a7a" stop-opacity=".9"/><stop offset="1" stop-color="#2e1a7a" stop-opacity="0"/></radialGradient>
+      <linearGradient id="chev" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#14c4dc"/><stop offset="1" stop-color="#a78bfa"/></linearGradient>
+      <clipPath id="clipCover"><rect x="200" y="0" width="103" height="216"/></clipPath>
+      <clipPath id="clipFlap"><rect x="0" y="0" width="100" height="216"/></clipPath>
     </defs>
-    <rect width="303" height="216" fill="url(#dots)"/>
-    <!-- lumini copertă -->
-    <ellipse cx="292" cy="40" rx="70" ry="60" fill="url(#g1)"/>
-    <ellipse cx="215" cy="150" rx="75" ry="65" fill="url(#g2)"/>
-    <!-- lumină spate -->
-    <ellipse cx="110" cy="10" rx="55" ry="40" fill="url(#g2)" opacity=".7"/>
-    <!-- lumină canat -->
-    <ellipse cx="10" cy="200" rx="60" ry="45" fill="url(#g1)" opacity=".6"/>
+
+    <!-- canat pliat: indigo închis -->
+    <rect x="0" y="0" width="100" height="216" fill="#0d0b22"/>
+    <g clip-path="url(#clipFlap)">
+      <ellipse cx="-5" cy="230" rx="70" ry="55" fill="url(#cv3)"/>
+      <ellipse cx="95" cy="-10" rx="40" ry="30" fill="url(#cv1)" opacity=".35"/>
+    </g>
+
+    <!-- spate: alb (fundal implicit) -->
+
+    <!-- copertă: mesh indigo / violet / cyan -->
+    <rect x="200" y="0" width="103" height="216" fill="#0d0b22"/>
+    <g clip-path="url(#clipCover)">
+      <ellipse cx="300" cy="10" rx="65" ry="55" fill="url(#cv2)"/>
+      <ellipse cx="215" cy="205" rx="85" ry="70" fill="url(#cv1)"/>
+      <ellipse cx="275" cy="130" rx="60" ry="50" fill="url(#cv3)"/>
+      <!-- motivul „A”: chevroane concentrice, derivate din siglă -->
+      <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="232.0,180 268,108 304.0,180" stroke="url(#chev)" stroke-width=".9"/>
+        <polyline points="235.5,180 268,115 300.5,180" stroke="#ffffff" stroke-opacity="0.42" stroke-width=".35"/>
+        <polyline points="239.0,180 268,122 297.0,180" stroke="#ffffff" stroke-opacity="0.32" stroke-width=".35"/>
+        <polyline points="242.5,180 268,129 293.5,180" stroke="#ffffff" stroke-opacity="0.24" stroke-width=".35"/>
+        <polyline points="246.0,180 268,136 290.0,180" stroke="#ffffff" stroke-opacity="0.17" stroke-width=".35"/>
+        <polyline points="249.5,180 268,143 286.5,180" stroke="#ffffff" stroke-opacity="0.11" stroke-width=".35"/>
+        <line x1="209" y1="180" x2="303" y2="180" stroke="#ffffff" stroke-opacity=".16" stroke-width=".3"/>
+        <line x1="242" y1="164" x2="294" y2="164" stroke="#14c4dc" stroke-width="1.1"/>
+        <circle cx="268" cy="108" r="1.3" fill="#ffffff"/>
+      </g>
+    </g>
   </svg>
 
-  <div class="watermark">AXION</div>
+  <!-- ===== canat pliat ===== -->
+  <div class="panel w97 flap dark">
+    <div class="label">De ce Project Axion</div>
+    <h2>Un singur partener pentru tot ce ține de <span class="grad-text">IT-ul firmei tale.</span></h2>
 
-  <!-- ===== Canat pliat (stânga) — se vede primul la deschiderea copertei ===== -->
-  <div class="panel w97 flap">
-    <div class="kicker">// De ce Project Axion</div>
-    <h2 class="h2">Patru piloni.<br><span class="grad-text">Un singur motor.</span></h2>
-    <p class="intro">Un partener tehnic, nu doar un „freelancer de site-uri”. Gândim sistemul cap-coadă — proiectat, automatizat și securizat sub un singur acoperiș.</p>
-
-    <div class="pillars">
-      <div class="pillar"><span class="n">01</span><div>
-        <h3>Full-stack de ultimă generație</h3>
-        <p>Aplicații web pe TanStack Start, React 19 și Vite, rulate la edge — rapide pe orice telefon.</p>
+    <div class="reasons">
+      <div class="reason"><span class="n grad-text">01</span><div>
+        <h3>Gândim sistemul cap-coadă</h3>
+        <p>Nu doar un site: date, utilizatori, backup și creștere — planificate de la început.</p>
       </div></div>
-      <div class="pillar"><span class="n">02</span><div>
-        <h3>Automatizări care lucrează pentru tine</h3>
-        <p>Scripturi Python și Node.js, sincronizări API și fluxuri care elimină munca manuală repetitivă.</p>
+      <div class="reason"><span class="n grad-text">02</span><div>
+        <h3>Tehnologii moderne, rapide</h3>
+        <p>Aplicații care se încarcă instant pe telefon și costuri de găzduire predictibile.</p>
       </div></div>
-      <div class="pillar"><span class="n">03</span><div>
-        <h3>Infrastructură sigură</h3>
-        <p>Supabase + PostgreSQL cu Row-Level Security, criptare AES-GCM 256-bit și date găzduite în UE.</p>
+      <div class="reason"><span class="n grad-text">03</span><div>
+        <h3>Securitate implicită</h3>
+        <p>Criptare, acces controlat și date găzduite în UE, conform GDPR.</p>
       </div></div>
-      <div class="pillar"><span class="n">04</span><div>
-        <h3>Arhitectură strategică</h3>
-        <p>Audituri și deciziile grele de inginerie — luate înainte ca prima linie de cod să intre în producție.</p>
+      <div class="reason"><span class="n grad-text">04</span><div>
+        <h3>Explicații pe înțelesul tău</h3>
+        <p>Recomandări clare, estimări realiste și documentație fără jargon.</p>
       </div></div>
     </div>
 
     <div class="stats">
-      <div class="stat"><b class="grad-text">&lt;12 ms</b><span>timp de răspuns</span></div>
-      <div class="stat"><b class="grad-text">24 h</b><span>răspuns la cerere</span></div>
-      <div class="stat"><b>GDPR</b><span>date în UE</span></div>
-      <div class="stat"><b>2–4 săpt.</b><span>site de prezentare</span></div>
+      <div class="stat"><b>24 h</b><span>răspuns la orice<br>cerere de ofertă</span></div>
+      <div class="stat"><b>2–4 săpt.</b><span>pentru un site<br>de prezentare</span></div>
+      <div class="stat"><b>&lt;12 ms</b><span>timp de răspuns<br>al serverului</span></div>
+      <div class="stat"><b>100%</b><span>date găzduite<br>în Uniunea Europeană</span></div>
     </div>
   </div>
 
-  <!-- ===== Spate (mijloc) — contact ===== -->
+  <!-- ===== spate ===== -->
   <div class="panel w100 back">
-    <div class="kicker">// Contact</div>
-    <h2 class="h2">Hai să vorbim.</h2>
-    <p class="intro">Spune-ne pe scurt despre proiect sau problema IT pe care o ai. Revenim în cel mult <b style="color:var(--ink);font-weight:600">24 de ore</b> cu pașii recomandați și o estimare orientativă — <b style="color:var(--ink);font-weight:600">gratuit</b>.</p>
+    <div class="label">Contact</div>
+    <h2>Hai să vorbim despre firma ta.</h2>
+    <p class="intro">Spune-ne pe scurt ce ai nevoie. Revenim în cel mult 24 de ore cu pașii recomandați și o estimare orientativă — fără niciun cost.</p>
 
-    <div class="contact-list">
-      <div class="c-row">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg>
-        <div><div class="lbl">Email</div><div class="val">daviddricu@gmail.com</div></div>
+    <div class="contacts">
+      <div class="ct">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#6d28d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg></span>
+        <div><small>Email</small><b>daviddricu@gmail.com</b></div>
       </div>
-      <div class="c-row">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.8 5.6 3.8 9s-1.2 6.4-3.8 9c-2.6-2.6-3.8-5.6-3.8-9S9.4 5.6 12 3Z"/></svg>
-        <div><div class="lbl">Web</div><div class="val">projectaxion.ro<small>formular de contact online</small></div></div>
+      <div class="ct">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#6d28d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.8 5.6 3.8 9s-1.2 6.4-3.8 9c-2.6-2.6-3.8-5.6-3.8-9S9.4 5.6 12 3Z"/></svg></span>
+        <div><small>Web</small><b>projectaxion.ro</b></div>
       </div>
-      <div class="c-row">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
-        <div><div class="lbl">Sediu</div><div class="val">Vârvoru de Jos, jud. Dolj<small>Intervenții la fața locului în Dolj · remote în toată România</small></div></div>
+      <div class="ct">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#6d28d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>
+        <div><small>Sediu</small><b>Vârvoru de Jos, jud. Dolj</b><i>La fața locului în Dolj · remote în toată țara</i></div>
       </div>
     </div>
 
-    <div class="qr-box">
+    <div class="qr-row">
       <div class="qr">{{QR}}</div>
-      <p><b>Scanează și cere o ofertă</b>Descoperă serviciile complete și trimite-ne un mesaj direct de pe telefon.</p>
+      <div><b>Scanează și cere o ofertă</b><p>Vezi serviciile complete și trimite-ne un mesaj direct de pe telefon.</p></div>
     </div>
 
     <div class="funding">
       <div class="logos">
-        <img src="../../public/feadr/ue-cofinantat.png" style="height:6.4mm" alt="Cofinanțat de Uniunea Europeană">
+        <img src="../../public/feadr/ue-cofinantat.png" style="height:6.2mm" alt="Cofinanțat de Uniunea Europeană">
         <img src="../../public/feadr/guvernul-romaniei.png" style="height:6.4mm" alt="Guvernul României">
-        <img src="../../public/feadr/madr.svg" style="height:6mm" alt="MADR">
+        <img src="../../public/feadr/madr.svg" style="height:5.8mm" alt="MADR">
         <img src="../../public/feadr/afir_logotip.png" style="height:5.4mm" alt="AFIR">
         <img src="../../public/feadr/leader.webp" style="height:5.4mm" alt="LEADER">
       </div>
       <p>Proiect finanțat prin FEADR — Planul Strategic PAC 2023–2027, măsura LEADER.<br>Beneficiar: AXION VISION SRL · Cod proiect F36010806109241703226</p>
     </div>
-    <div class="legal">© 2026 AXION VISION SRL · CAEN 6220</div>
+    <div class="legal">© 2026 Axion Vision SRL</div>
   </div>
 
-  <!-- ===== Copertă (dreapta) ===== -->
-  <div class="panel w100 cover">
+  <!-- ===== copertă ===== -->
+  <div class="panel w100 cover dark">
     <div class="brand">
       <svg viewBox="0 0 32 32">
-        <defs><linearGradient id="lg" x1="8" y1="8" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop stop-color="#00f0ff"/><stop offset="1" stop-color="#8a2be2"/></linearGradient></defs>
-        <rect width="32" height="32" rx="7" fill="#0d0d11" stroke="#26262e" stroke-width=".6"/>
+        <defs><linearGradient id="lg" x1="8" y1="8" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop stop-color="#14c4dc"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs>
+        <rect width="32" height="32" rx="8" fill="#ffffff" fill-opacity=".08" stroke="#ffffff" stroke-opacity=".22" stroke-width=".7"/>
         <path d="M8 23.5 16 8.5 24 23.5" fill="none" stroke="url(#lg)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M10.5 18.5h11" fill="none" stroke="#00f0ff" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M10.5 18.5h11" fill="none" stroke="#14c4dc" stroke-width="2.2" stroke-linecap="round"/>
       </svg>
-      <div>
-        <div class="name">PROJECT AXION</div>
-        <div class="sub">AXION VISION SRL</div>
-      </div>
+      <div><b>PROJECT AXION</b><span>AXION VISION SRL</span></div>
     </div>
 
-    <div class="hero">
-      <div class="kicker">// Consultanță IT &amp; dezvoltare web</div>
-      <h1>Ecosisteme digitale de <span class="grad-text">înaltă performanță</span> pentru firma ta.</h1>
-      <p class="lead">Consultanță IT, site-uri rapide și mentenanță pentru IMM-uri din România — de la audit și arhitectură până la operare zilnică.</p>
-      <div class="chips">
-        <span class="chip"><i>◇</i>Consultanță IT</span>
-        <span class="chip"><i>◇</i>Portaluri web</span>
-        <span class="chip"><i>◇</i>Mentenanță IT</span>
-        <span class="chip"><i>◇</i>Securitate &amp; cloud</span>
-      </div>
+    <h1>Tehnologie care <em>lucrează</em> pentru afacerea ta.</h1>
+    <p class="lead">Consultanță IT, site-uri și mentenanță pentru firme din România — de la primul audit până la funcționarea de zi cu zi.</p>
+    <div class="services-line">
+      <span>Consultanță IT &amp; infrastructură</span>
+      <span>Site-uri &amp; portaluri web</span>
+      <span>Mentenanță IT &amp; reparații</span>
     </div>
 
-    <div class="foot">
-      <div class="status"><span class="dot"></span>SYS_STATUS: OPTIMAL // OFERTĂ GRATUITĂ</div>
-      <div class="url-big">projectaxion.ro</div>
+    <div class="bottom">
+      <div class="url">projectaxion.ro</div>
+      <div class="tag">Ofertă gratuită în 24 de ore</div>
     </div>
   </div>
 </section>
 
-<!-- ======================= PAGINA 2 — INTERIOR ======================= -->
+<!-- ============================== INTERIOR ============================== -->
 <section class="sheet interior">
-  <div class="band"></div>
-  <div class="band-bottom"></div>
+  <svg class="bg" viewBox="0 0 303 216" preserveAspectRatio="none">
+    <defs>
+      <radialGradient id="iv1" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#7c3aed" stop-opacity=".7"/><stop offset="1" stop-color="#7c3aed" stop-opacity="0"/></radialGradient>
+      <radialGradient id="iv2" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#14c4dc" stop-opacity=".35"/><stop offset="1" stop-color="#14c4dc" stop-opacity="0"/></radialGradient>
+      <clipPath id="clipMid"><rect x="103" y="0" width="100" height="216"/></clipPath>
+    </defs>
+    <!-- panoul din mijloc: închis, pentru ritm -->
+    <rect x="103" y="0" width="100" height="216" fill="#0d0b22"/>
+    <g clip-path="url(#clipMid)">
+      <ellipse cx="200" cy="225" rx="75" ry="60" fill="url(#iv1)"/>
+      <ellipse cx="105" cy="-5" rx="55" ry="40" fill="url(#iv2)"/>
+      <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="133,222 168,163 203,222" stroke="#ffffff" stroke-opacity=".12" stroke-width=".35"/>
+        <polyline points="139,222 168,172 197,222" stroke="#ffffff" stroke-opacity=".08" stroke-width=".35"/>
+        <polyline points="145,222 168,181 191,222" stroke="#ffffff" stroke-opacity=".05" stroke-width=".35"/>
+      </g>
+    </g>
+  </svg>
 
-  <!-- 01 -->
+  <!-- ===== 01 Consultanță ===== -->
   <div class="panel w100 i1">
-    <div class="svc-head"><span class="svc-num">01</span><span class="tier">Activitate principală</span></div>
+    <div class="illu">
+      <svg viewBox="0 0 82 50" preserveAspectRatio="xMidYMid slice">
+        <defs><linearGradient id="g01" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#14c4dc"/><stop offset="1" stop-color="#6d28d9"/></linearGradient></defs>
+        <rect width="82" height="50" fill="#f1ecfc"/>
+        <circle cx="41" cy="11" r="7.5" fill="none" stroke="#6d28d9" stroke-opacity=".25" stroke-width=".3" stroke-dasharray="1 1"/>
+        <g stroke="#121026" stroke-opacity=".22" stroke-width=".4" fill="none">
+          <path d="M41 11 18 26M41 11 64 26M18 26 8 40M18 26 28 40M64 26 54 40M64 26 74 40M41 26 28 40"/>
+        </g>
+        <g stroke="url(#g01)" stroke-width=".9" fill="none" stroke-linecap="round"><path d="M41 11 41 26 54 40"/></g>
+        <circle cx="41" cy="11" r="3.6" fill="url(#g01)"/>
+        <g fill="#ffffff" stroke="#121026" stroke-width=".45">
+          <circle cx="18" cy="26" r="2.4"/><circle cx="64" cy="26" r="2.4"/>
+          <circle cx="8" cy="40" r="1.9"/><circle cx="28" cy="40" r="1.9"/><circle cx="74" cy="40" r="1.9"/>
+        </g>
+        <circle cx="41" cy="26" r="2.6" fill="#ffffff" stroke="#6d28d9" stroke-width=".8"/>
+        <circle cx="54" cy="40" r="2.2" fill="#6d28d9"/>
+        <path d="M52.9 40 53.7 40.8 55.2 39.2" fill="none" stroke="#fff" stroke-width=".55" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="label svc-label">01 · Activitate principală</div>
     <h2>Consultanță IT &amp; infrastructură</h2>
-    <p class="intro">Un partener IT care înțelege atât tehnologia, cât și realitatea unui IMM: buget limitat, termene clare și zero toleranță pentru downtime. Începem cu un audit clar: ce funcționează, ce e riscant și ce trebuie schimbat primul.</p>
-    <div class="sub-k">Ce primești concret</div>
-    <ul class="ticks">
-      <li>Audit tehnic al sistemelor și infrastructurii existente</li>
+    <p class="intro">Începem cu un audit clar — ce funcționează, ce e riscant și ce trebuie schimbat primul. Apoi proiectăm și operăm infrastructura, adaptată bugetului unui IMM.</p>
+    <ul class="list">
+      <li>Audit tehnic al sistemelor existente</li>
       <li>Plan de acțiune prioritizat pe riscuri și buget</li>
-      <li>Arhitectură cloud (Cloudflare, Supabase, PostgreSQL)</li>
-      <li>Aplicații web și API-uri scalabile</li>
+      <li>Arhitectură cloud și baze de date</li>
       <li>Automatizări și integrări între sisteme</li>
       <li>Securitate cibernetică și conformitate GDPR</li>
-      <li>Suport, SLA-uri și instruire pentru echipă</li>
+      <li>Suport, SLA-uri și instruirea echipei</li>
     </ul>
-    <div class="sub-k">Ideal pentru</div>
-    <ul class="aud"><li>IMM-uri care digitalizează procesele interne</li><li>Firme de servicii care au nevoie de aplicații web custom</li><li>Antreprenori care vor infrastructură IT sigură de la început</li><li>Companii care migrează de la soluții vechi la cloud modern</li></ul>
-    <div class="callout"><b>Evaluare IT gratuită</b><span>Ne spui ce sisteme folosești — primești pașii recomandați în 24 h.</span></div>
+    <div class="promise">
+      <div><b>Evaluare IT gratuită</b><span>Pașii recomandați, în 24 de ore.</span></div>
+      <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </div>
   </div>
 
-  <!-- 02 -->
-  <div class="panel w100 i2">
-    <div class="svc-head"><span class="svc-num">02</span><span class="tier">Dezvoltare web</span></div>
+  <!-- ===== 02 Web (panou închis) ===== -->
+  <div class="panel w100 i2 dark">
+    <div class="illu">
+      <svg viewBox="0 0 82 50" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="g02" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#14c4dc"/><stop offset="1" stop-color="#7c3aed"/></linearGradient>
+        </defs>
+        <rect width="82" height="50" fill="#ffffff" fill-opacity=".05"/>
+        <rect x=".2" y=".2" width="81.6" height="49.6" rx="4" fill="none" stroke="#ffffff" stroke-opacity=".12" stroke-width=".3"/>
+        <!-- fereastră browser -->
+        <rect x="7" y="7" width="54" height="36" rx="2.4" fill="#16123a" stroke="#ffffff" stroke-opacity=".35" stroke-width=".35"/>
+        <line x1="7" y1="11.5" x2="61" y2="11.5" stroke="#ffffff" stroke-opacity=".2" stroke-width=".3"/>
+        <circle cx="10" cy="9.3" r=".8" fill="#ffffff" fill-opacity=".5"/><circle cx="12.6" cy="9.3" r=".8" fill="#ffffff" fill-opacity=".3"/><circle cx="15.2" cy="9.3" r=".8" fill="#ffffff" fill-opacity=".2"/>
+        <rect x="20" y="8.3" width="28" height="2" rx="1" fill="#ffffff" fill-opacity=".1"/>
+        <rect x="11" y="15" width="46" height="11" rx="1.6" fill="url(#g02)"/>
+        <rect x="14" y="18.2" width="20" height="1.8" rx=".9" fill="#ffffff" fill-opacity=".9"/>
+        <rect x="14" y="21.4" width="13" height="1.4" rx=".7" fill="#ffffff" fill-opacity=".55"/>
+        <rect x="11" y="29" width="13.5" height="10.5" rx="1.2" fill="#ffffff" fill-opacity=".08"/>
+        <rect x="27.2" y="29" width="13.5" height="10.5" rx="1.2" fill="#ffffff" fill-opacity=".08"/>
+        <rect x="43.5" y="29" width="13.5" height="10.5" rx="1.2" fill="#ffffff" fill-opacity=".08"/>
+        <!-- telefon -->
+        <rect x="56" y="17" width="17" height="28" rx="2.6" fill="#0d0b22" stroke="#ffffff" stroke-opacity=".55" stroke-width=".4"/>
+        <rect x="62" y="18.6" width="5" height=".9" rx=".45" fill="#ffffff" fill-opacity=".35"/>
+        <rect x="58.2" y="21.5" width="12.6" height="7.5" rx="1.2" fill="url(#g02)"/>
+        <rect x="58.2" y="30.8" width="9" height="1.2" rx=".6" fill="#ffffff" fill-opacity=".5"/>
+        <rect x="58.2" y="33.2" width="11" height="1.2" rx=".6" fill="#ffffff" fill-opacity=".25"/>
+        <rect x="58.2" y="36.8" width="12.6" height="5.5" rx="1" fill="#ffffff" fill-opacity=".08"/>
+        <!-- indicator viteză -->
+        <circle cx="69" cy="10" r="5" fill="#0d0b22" stroke="#14c4dc" stroke-width=".5"/>
+        <path d="M66.3 11.6a3.1 3.1 0 1 1 5.4 0" fill="none" stroke="#ffffff" stroke-opacity=".3" stroke-width=".6" stroke-linecap="round"/>
+        <path d="M66.3 11.6a3.1 3.1 0 0 1 4.9-3.6" fill="none" stroke="#14c4dc" stroke-width=".6" stroke-linecap="round"/>
+        <line x1="69" y1="10.6" x2="71" y2="8.6" stroke="#ffffff" stroke-width=".5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="label svc-label">02 · Dezvoltare web</div>
     <h2>Site-uri &amp; portaluri web</h2>
-    <p class="intro">Primul contact al clienților cu firma ta e adesea online. Construim de la zero site-uri de prezentare și portaluri corporate — rapide, sigure, optimizate pentru Google și gândite să crească odată cu afacerea ta.</p>
-    <div class="sub-k">Ce livrăm</div>
-    <ul class="ticks">
-      <li>Site de prezentare sau portal web custom</li>
-      <li>Design responsive: mobil, tabletă, desktop</li>
-      <li>SEO tehnic și performanță (Core Web Vitals)</li>
-      <li>Formulare de contact și integrări email</li>
-      <li>Zone cu autentificare, roluri și extranet</li>
-      <li>Administrare conținut dinamic</li>
-      <li>Găzduire Cloudflare cu SSL și protecție DDoS</li>
+    <p class="intro">Primul contact al clienților cu firma ta e adesea online. Construim de la zero site-uri și portaluri rapide, sigure și ușor de găsit pe Google.</p>
+    <ul class="list">
+      <li>Site de prezentare sau portal web personalizat</li>
+      <li>Design adaptat pentru mobil, tabletă și desktop</li>
+      <li>SEO tehnic și viteză de încărcare</li>
+      <li>Zone pentru clienți, conturi și roluri</li>
+      <li>Administrare ușoară a conținutului</li>
+      <li>Găzduire sigură, cu SSL și protecție DDoS</li>
     </ul>
-    <div class="sub-k">Ideal pentru</div>
-    <ul class="aud"><li>Firme care au nevoie de prezență online profesională</li><li>Companii care vor un portal pentru clienți sau parteneri</li><li>Antreprenori care lansează un brand nou pe piață</li><li>Business-uri care înlocuiesc un site vechi cu unul modern</li></ul>
-    <div class="callout"><b>Site live în 2–4 săptămâni</b><span>Portaluri avansate: 1–3 luni, în funcție de integrări.</span></div>
+    <div class="promise">
+      <div><b>Site live în 2–4 săptămâni</b><span>Portaluri avansate: 1–3 luni.</span></div>
+      <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </div>
   </div>
 
-  <!-- 03 -->
+  <!-- ===== 03 Mentenanță ===== -->
   <div class="panel w97 i3">
-    <div class="svc-head"><span class="svc-num">03</span><span class="tier">Service &amp; suport</span></div>
+    <div class="illu">
+      <svg viewBox="0 0 79 50" preserveAspectRatio="xMidYMid slice">
+        <defs><linearGradient id="g03" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#14c4dc"/><stop offset="1" stop-color="#6d28d9"/></linearGradient></defs>
+        <rect width="79" height="50" fill="#e7f6f9"/>
+        <!-- monitor -->
+        <rect x="10" y="8" width="42" height="27" rx="2.2" fill="#ffffff" stroke="#121026" stroke-width=".5"/>
+        <rect x="12.5" y="10.5" width="37" height="22" rx="1" fill="#f6f5fb"/>
+        <path d="M27 35v4.5M35 35v4.5M22 40h18" stroke="#121026" stroke-width=".5" stroke-linecap="round" fill="none"/>
+        <!-- puls monitorizare -->
+        <polyline points="14.5,23 21,23 23.5,17 27,29 30,14 33,26 35.5,21 38,23 47.5,23" fill="none" stroke="url(#g03)" stroke-width=".9" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- roată dințată -->
+        <g transform="translate(58 33) scale(1.05)">
+          <path d="M7.54 -2.01 L9.86 -1.68 L9.86 1.68 L7.54 2.01 L7.07 3.30 L8.63 5.05 L6.47 7.62 L4.48 6.39 L3.29 7.07 L3.37 9.42 L0.06 10.00 L-0.67 7.77 L-2.02 7.53 L-3.47 9.38 L-6.38 7.70 L-5.51 5.52 L-6.39 4.47 L-8.69 4.95 L-9.84 1.79 L-7.77 0.69 L-7.77 -0.69 L-9.84 -1.79 L-8.69 -4.95 L-6.39 -4.47 L-5.51 -5.52 L-6.38 -7.70 L-3.47 -9.38 L-2.02 -7.53 L-0.67 -7.77 L0.06 -10.00 L3.37 -9.42 L3.29 -7.07 L4.48 -6.39 L6.47 -7.62 L8.63 -5.05 L7.07 -3.30Z" fill="url(#g03)"/>
+          <circle r="3.4" fill="#e7f6f9"/>
+        </g>
+        <!-- bifă -->
+        <circle cx="52" cy="9" r="4.2" fill="#6d28d9"/>
+        <path d="M50 9.1 51.4 10.5 54.1 7.6" fill="none" stroke="#fff" stroke-width=".8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="label svc-label">03 · Service &amp; suport</div>
     <h2>Mentenanță IT &amp; reparații</h2>
-    <p class="intro">Când un calculator sau o rețea se oprește, firma pierde productivitate imediat. Mentenanța preventivă identifică riscurile înainte să devină urgențe scumpe — iar fiecare intervenție este documentată.</p>
-    <div class="sub-k">Servicii</div>
-    <ul class="ticks">
+    <p class="intro">Mentenanța preventivă oprește problemele înainte să devină urgențe scumpe. Fiecare intervenție este documentată, ca să știi exact ce s-a făcut.</p>
+    <ul class="list">
       <li>Repararea calculatoarelor și stațiilor de lucru</li>
-      <li>Rețele locale, routere, switch-uri și Wi-Fi</li>
+      <li>Rețele locale, routere și Wi-Fi</li>
       <li>Diagnostic hardware și software</li>
-      <li>Planuri de mentenanță preventivă programată</li>
-      <li>Instalare, configurare și upgrade componente</li>
-      <li>Verificare backup și actualizări de sistem</li>
+      <li>Planuri de mentenanță preventivă</li>
+      <li>Upgrade componente și verificare backup</li>
       <li>Suport de urgență la fața locului</li>
     </ul>
-    <div class="sub-k">Ideal pentru</div>
-    <ul class="aud"><li>Birouri mici cu 2–20 stații de lucru</li><li>Firme din Dolj care au nevoie de intervenții locale</li><li>IMM-uri fără departament IT intern</li><li>Firme care vor un singur partener IT, hardware și software</li></ul>
-    <div class="callout"><b>Intervenții rapide în Dolj</b><span>Pentru restul țării, rezolvăm majoritatea problemelor remote.</span></div>
+    <div class="promise">
+      <div><b>Intervenții rapide în Dolj</b><span>În restul țării, rezolvăm remote.</span></div>
+      <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </div>
   </div>
-
-  <!-- linii subsol pe banda închisă -->
-  <div class="footline" style="left:11mm;width:84mm;right:auto"><span>Project Axion</span><span>Consultanță</span></div>
-  <div class="footline" style="left:111mm;width:84mm;right:auto"><span><em>●</em> projectaxion.ro</span><span>Web</span></div>
-  <div class="footline" style="left:211mm;width:81mm;right:auto"><span>Ofertă în 24 h</span><span>Mentenanță</span></div>
 </section>
 
 </body>
