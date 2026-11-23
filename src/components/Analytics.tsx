@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { GA_MEASUREMENT_ID } from '~/lib/analytics'
 
-/** Loads GA4 only when VITE_GA_MEASUREMENT_ID is set at build time. */
+/** Loads the Google tag (gtag.js) on every page. */
 export function Analytics() {
   useEffect(() => {
     const id = GA_MEASUREMENT_ID
