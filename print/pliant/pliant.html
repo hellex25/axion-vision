@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<title>Pliant Project Axion</title>
+<!--
+  Pliant A4 tri-fold (fălțuire tip „scrisoare” / roll fold)
+  Format final deschis: 297 × 210 mm · cu bleed 3 mm: 303 × 216 mm
+  Canate: 100 / 100 / 97 mm (canatul care se pliază în interior e cu 3 mm mai îngust)
+  Pagina 1 = EXTERIOR  [ canat interior pliat 97 | spate 100 | copertă 100 ]
+  Pagina 2 = INTERIOR  [ 01 · 100 | 02 · 100 | 03 · 97 ]
+-->
+<style>
+  @font-face { font-family: Geist; src: url(fonts/Geist-Regular.woff2); font-weight: 400; }
+  @font-face { font-family: Geist; src: url(fonts/Geist-Medium.woff2); font-weight: 500; }
+  @font-face { font-family: Geist; src: url(fonts/Geist-SemiBold.woff2); font-weight: 600; }
+  @font-face { font-family: Geist; src: url(fonts/Geist-Bold.woff2); font-weight: 700; }
+  @font-face { font-family: GeistMono; src: url(fonts/GeistMono-Regular.woff2); font-weight: 400; }
+  @font-face { font-family: GeistMono; src: url(fonts/GeistMono-Medium.woff2); font-weight: 500; }
+
+  :root {
+    --void: #050506;
+    --panel: #0b0b0e;
+    --hair: #24242c;
+    --cyan: #00f0ff;
+    --purple: #8a2be2;
+    --signal: #1aff8c;
+    --ink: #f4f4f5;
+    --muted: #a1a1aa;
+    --dim: #6b6b75;
+    /* interior (hârtie albă) */
+    --p-ink: #0d0d12;
+    --p-body: #3a3a44;
+    --p-dim: #7a7a86;
+    --p-line: #dcdce3;
+    --teal: #0086a8;
+    --violet: #6a1fc0;
+    --grad: linear-gradient(100deg, var(--cyan), var(--purple));
+    --grad-print: linear-gradient(100deg, #00b8d4, #7a24d6);
+  }
+
+  @page { size: 303mm 216mm; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #777; }
+  body {
+    font-family: Geist, sans-serif;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    font-feature-settings: "ss01", "kern";
+  }
+
+  .sheet {
+    position: relative;
+    width: 303mm; height: 216mm;
+    overflow: hidden;
+    break-after: page;
+  }
+  .sheet:last-child { break-after: auto; }
+  .exterior { background: var(--void); color: var(--ink); }
+  .interior { background: #ffffff; color: var(--p-ink); }
+
+  /* panouri poziționate în zona de tăiere (offset bleed 3 mm) */
+  .panel {
+    position: absolute; top: 3mm; height: 210mm;
+    padding: 11mm 8mm 9mm;
+    display: flex; flex-direction: column;
+  }
+  .w100 { width: 100mm; } .w97 { width: 97mm; }
+
+  /* ---------- decor exterior ---------- */
+  .grid {
+    position: absolute; inset: 0;
+  }
+  .glow {
+    position: absolute; border-radius: 50%;
+    pointer-events: none;
+  }
+  .mono { font-family: GeistMono, monospace; }
+  .kicker {
+    font-family: GeistMono, monospace; font-size: 6.6pt; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--cyan);
+  }
+  .grad-text {
+    background: var(--grad); -webkit-background-clip: text; background-clip: text;
+    color: transparent;
+  }
+
+  /* ---------- COPERTĂ ---------- */
+  .cover { left: 200mm; padding-top: 12mm; }
+  .brand { display: flex; align-items: center; gap: 3mm; }
+  .brand svg { width: 10mm; height: 10mm; }
+  .brand .name { font-family: GeistMono, monospace; font-weight: 500; font-size: 8.6pt; letter-spacing: .24em; }
+  .brand .sub { font-family: GeistMono, monospace; font-size: 5.8pt; letter-spacing: .14em; color: var(--muted); margin-top: .8mm; }
+
+  .cover .hero { margin-top: 30mm; }
+  .cover h1 {
+    font-size: 25pt; line-height: 1.04; letter-spacing: -.035em; font-weight: 600;
+    margin-top: 4mm;
+  }
+  .cover .lead { font-size: 8.6pt; line-height: 1.5; color: var(--muted); margin-top: 5mm; max-width: 78mm; }
+  .chips { display: flex; flex-wrap: wrap; gap: 1.6mm; margin-top: 7mm; }
+  .chip {
+    font-family: GeistMono, monospace; font-size: 6.2pt; letter-spacing: .06em;
+    border: .25mm solid #34343d; border-radius: 10mm; padding: 1.3mm 2.8mm; color: var(--ink);
+    background: rgba(255,255,255,.03);
+  }
+  .chip i { font-style: normal; color: var(--cyan); margin-right: 1.2mm; }
+  .cover .foot { margin-top: auto; }
+  .status {
+    font-family: GeistMono, monospace; font-size: 5.6pt; letter-spacing: .1em; color: var(--dim);
+    display: flex; align-items: center; gap: 1.8mm;
+  }
+  .dot { width: 1.6mm; height: 1.6mm; border-radius: 50%; background: var(--signal); display: inline-block; }
+  .url-big { font-family: GeistMono, monospace; font-size: 11pt; font-weight: 500; letter-spacing: .04em; margin-top: 2.6mm; }
+  .watermark {
+    position: absolute; left: 200mm; bottom: -9mm; width: 103mm; text-align: center;
+    font-family: GeistMono, monospace; font-weight: 500; font-size: 64pt; letter-spacing: -.04em;
+    color: transparent; -webkit-text-stroke: .22mm rgba(255,255,255,.08);
+  }
+
+  /* ---------- CANAT PLIAT (exterior stânga) ---------- */
+  .flap { left: 3mm; }
+  .h2 { font-size: 15.5pt; line-height: 1.08; letter-spacing: -.03em; font-weight: 600; margin-top: 3mm; }
+  .flap .intro { font-size: 7.6pt; line-height: 1.5; color: var(--muted); margin-top: 3.5mm; }
+  .pillars { margin-top: 6mm; display: flex; flex-direction: column; gap: 4.6mm; }
+  .pillar { display: grid; grid-template-columns: 7mm 1fr; gap: 2.4mm; }
+  .pillar .n { font-family: GeistMono, monospace; font-size: 6.4pt; color: var(--cyan); padding-top: .6mm; }
+  .pillar h3 { font-size: 8.6pt; font-weight: 600; letter-spacing: -.01em; }
+  .pillar p { font-size: 7pt; line-height: 1.45; color: var(--muted); margin-top: 1mm; }
+  .stats {
+    margin-top: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    border-top: .25mm solid var(--hair); border-left: .25mm solid var(--hair);
+  }
+  .stat { border-right: .25mm solid var(--hair); border-bottom: .25mm solid var(--hair); padding: 3mm 3mm 2.6mm; }
+  .stat b { display: block; font-size: 14pt; font-weight: 600; letter-spacing: -.03em; }
+  .stat span { font-family: GeistMono, monospace; font-size: 5.4pt; letter-spacing: .08em; color: var(--muted); text-transform: uppercase; }
+
+  /* ---------- SPATE / CONTACT ---------- */
+  .back { left: 100mm; }
+  .back .h2 { font-size: 21pt; }
+  .back .intro { font-size: 7.8pt; line-height: 1.5; color: var(--muted); margin-top: 3.5mm; }
+  .contact-list { margin-top: 6mm; display: flex; flex-direction: column; gap: 3.4mm; }
+  .c-row { display: grid; grid-template-columns: 6mm 1fr; align-items: start; gap: 2mm; }
+  .c-row svg { width: 4.2mm; height: 4.2mm; margin-top: .4mm; }
+  .c-row .lbl { font-family: GeistMono, monospace; font-size: 5.4pt; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
+  .c-row .val { font-size: 8.8pt; font-weight: 500; margin-top: .4mm; }
+  .c-row .val small { display: block; font-size: 6.6pt; font-weight: 400; color: var(--muted); margin-top: .4mm; }
+  .qr-box {
+    margin-top: 6mm; display: flex; align-items: center; gap: 4mm;
+    border: .25mm solid var(--hair); border-radius: 3mm; padding: 3mm; background: rgba(255,255,255,.025);
+  }
+  .qr { width: 21mm; height: 21mm; background: #fff; border-radius: 1.6mm; padding: 1.8mm; flex-shrink: 0; }
+  .qr svg { width: 100%; height: 100%; display: block; }
+  .qr-box p { font-size: 7pt; line-height: 1.45; color: var(--muted); }
+  .qr-box p b { color: var(--ink); font-weight: 600; display: block; font-size: 8pt; margin-bottom: 1mm; }
+  .funding {
+    margin-top: auto; background: #fff; color: #1a1a1a; border-radius: 2mm;
+    padding: 2.6mm 3mm 2.4mm;
+  }
+  .logos { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1.6mm 3.2mm; }
+  .logos img { display: block; object-fit: contain; }
+  .funding p { font-size: 4.9pt; line-height: 1.35; color: #333; margin-top: 1.8mm; text-align: center; }
+  .legal { font-family: GeistMono, monospace; font-size: 5.2pt; letter-spacing: .08em; color: var(--dim); margin-top: 2.6mm; text-align: center; }
+
+  /* ---------- INTERIOR ---------- */
+  .interior .panel { padding: 11mm 8mm 9mm; }
+  .i1 { left: 3mm; } .i2 { left: 103mm; } .i3 { left: 203mm; }
+  .band { position: absolute; left: 0; right: 0; top: 0; height: 6mm; background: var(--grad-print); }
+  .band-bottom { position: absolute; left: 0; right: 0; bottom: 0; height: 13mm; background: #0b0b0e; }
+  .svc-head { display: flex; align-items: baseline; justify-content: space-between; margin-top: 2mm; }
+  .svc-num { font-family: GeistMono, monospace; font-size: 26pt; font-weight: 500; letter-spacing: -.04em; line-height: 1;
+             background: var(--grad-print); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .tier { font-family: GeistMono, monospace; font-size: 5.6pt; letter-spacing: .14em; text-transform: uppercase; color: var(--p-dim);
+          border: .25mm solid var(--p-line); border-radius: 10mm; padding: 1mm 2.2mm; }
+  .interior h2 { font-size: 14.5pt; line-height: 1.1; letter-spacing: -.028em; font-weight: 600; margin-top: 4.5mm; }
+  .interior .intro { font-size: 7.6pt; line-height: 1.5; color: var(--p-body); margin-top: 3mm; }
+  .sub-k { font-family: GeistMono, monospace; font-size: 5.8pt; letter-spacing: .16em; text-transform: uppercase; color: var(--teal); margin-top: 5.5mm; }
+  ul.ticks { list-style: none; margin-top: 2.6mm; display: flex; flex-direction: column; gap: 2.2mm; }
+  ul.ticks li { position: relative; padding-left: 4.4mm; font-size: 7.6pt; line-height: 1.38; color: var(--p-ink); }
+  ul.ticks li::before {
+    content: ""; position: absolute; left: 0; top: 1.15mm; width: 2.2mm; height: 2.2mm; border-radius: .5mm;
+    background: var(--grad-print);
+  }
+  ul.aud { list-style: none; margin-top: 2.2mm; border-top: .25mm solid var(--p-line); }
+  ul.aud li { font-size: 7pt; line-height: 1.35; color: var(--p-body); padding: 1.7mm 0 1.7mm 5mm; border-bottom: .25mm solid var(--p-line); position: relative; }
+  ul.aud li::before { content: "→"; position: absolute; left: 0; color: var(--violet); font-family: GeistMono, monospace; }
+  .callout {
+    margin-top: auto; margin-bottom: 9mm; border-radius: 2.4mm; padding: 3mm 3.4mm;
+    background: #f3f4f8; border-left: 1mm solid var(--violet);
+  }
+  .callout b { display: block; font-size: 10.5pt; letter-spacing: -.02em; font-weight: 600; color: var(--p-ink); }
+  .callout span { display: block; font-size: 6.6pt; line-height: 1.4; color: var(--p-body); margin-top: .8mm; }
+  .footline {
+    position: absolute; left: 8mm; right: 8mm; bottom: 4.2mm;
+    font-family: GeistMono, monospace; font-size: 5.4pt; letter-spacing: .12em; text-transform: uppercase;
+    color: #9c9ca8; display: flex; justify-content: space-between; align-items: center;
+  }
+  .footline em { font-style: normal; color: var(--cyan); }
+</style>
+</head>
+<body>
+
+<!-- ======================= PAGINA 1 — EXTERIOR ======================= -->
+<section class="sheet exterior">
+  <!-- grilă de puncte (vector) -->
+  <svg class="grid" width="303mm" height="216mm" viewBox="0 0 303 216" preserveAspectRatio="none">
+    <defs>
+      <pattern id="dots" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="1" cy="1" r=".28" fill="#ffffff" fill-opacity=".09"/>
+      </pattern>
+      <radialGradient id="g1" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0" stop-color="#00f0ff" stop-opacity=".22"/>
+        <stop offset="1" stop-color="#00f0ff" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="g2" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0" stop-color="#8a2be2" stop-opacity=".30"/>
+        <stop offset="1" stop-color="#8a2be2" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#050506" stop-opacity="0"/>
+        <stop offset="1" stop-color="#050506" stop-opacity=".9"/>
+      </linearGradient>
+    </defs>
+    <rect width="303" height="216" fill="url(#dots)"/>
+    <!-- lumini copertă -->
+    <ellipse cx="292" cy="40" rx="70" ry="60" fill="url(#g1)"/>
+    <ellipse cx="215" cy="150" rx="75" ry="65" fill="url(#g2)"/>
+    <!-- lumină spate -->
+    <ellipse cx="110" cy="10" rx="55" ry="40" fill="url(#g2)" opacity=".7"/>
+    <!-- lumină canat -->
+    <ellipse cx="10" cy="200" rx="60" ry="45" fill="url(#g1)" opacity=".6"/>
+  </svg>
+
+  <div class="watermark">AXION</div>
+
+  <!-- ===== Canat pliat (stânga) — se vede primul la deschiderea copertei ===== -->
+  <div class="panel w97 flap">
+    <div class="kicker">// De ce Project Axion</div>
+    <h2 class="h2">Patru piloni.<br><span class="grad-text">Un singur motor.</span></h2>
+    <p class="intro">Un partener tehnic, nu doar un „freelancer de site-uri”. Gândim sistemul cap-coadă — proiectat, automatizat și securizat sub un singur acoperiș.</p>
+
+    <div class="pillars">
+      <div class="pillar"><span class="n">01</span><div>
+        <h3>Full-stack de ultimă generație</h3>
+        <p>Aplicații web pe TanStack Start, React 19 și Vite, rulate la edge — rapide pe orice telefon.</p>
+      </div></div>
+      <div class="pillar"><span class="n">02</span><div>
+        <h3>Automatizări care lucrează pentru tine</h3>
+        <p>Scripturi Python și Node.js, sincronizări API și fluxuri care elimină munca manuală repetitivă.</p>
+      </div></div>
+      <div class="pillar"><span class="n">03</span><div>
+        <h3>Infrastructură sigură</h3>
+        <p>Supabase + PostgreSQL cu Row-Level Security, criptare AES-GCM 256-bit și date găzduite în UE.</p>
+      </div></div>
+      <div class="pillar"><span class="n">04</span><div>
+        <h3>Arhitectură strategică</h3>
+        <p>Audituri și deciziile grele de inginerie — luate înainte ca prima linie de cod să intre în producție.</p>
+      </div></div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b class="grad-text">&lt;12 ms</b><span>timp de răspuns</span></div>
+      <div class="stat"><b class="grad-text">24 h</b><span>răspuns la cerere</span></div>
+      <div class="stat"><b>GDPR</b><span>date în UE</span></div>
+      <div class="stat"><b>2–4 săpt.</b><span>site de prezentare</span></div>
+    </div>
+  </div>
+
+  <!-- ===== Spate (mijloc) — contact ===== -->
+  <div class="panel w100 back">
+    <div class="kicker">// Contact</div>
+    <h2 class="h2">Hai să vorbim.</h2>
+    <p class="intro">Spune-ne pe scurt despre proiect sau problema IT pe care o ai. Revenim în cel mult <b style="color:var(--ink);font-weight:600">24 de ore</b> cu pașii recomandați și o estimare orientativă — <b style="color:var(--ink);font-weight:600">gratuit</b>.</p>
+
+    <div class="contact-list">
+      <div class="c-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg>
+        <div><div class="lbl">Email</div><div class="val">daviddricu@gmail.com</div></div>
+      </div>
+      <div class="c-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.8 5.6 3.8 9s-1.2 6.4-3.8 9c-2.6-2.6-3.8-5.6-3.8-9S9.4 5.6 12 3Z"/></svg>
+        <div><div class="lbl">Web</div><div class="val">projectaxion.ro<small>formular de contact online</small></div></div>
+      </div>
+      <div class="c-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+        <div><div class="lbl">Sediu</div><div class="val">Vârvoru de Jos, jud. Dolj<small>Intervenții la fața locului în Dolj · remote în toată România</small></div></div>
+      </div>
+    </div>
+
+    <div class="qr-box">
+      <div class="qr">{{QR}}</div>
+      <p><b>Scanează și cere o ofertă</b>Descoperă serviciile complete și trimite-ne un mesaj direct de pe telefon.</p>
+    </div>
+
+    <div class="funding">
+      <div class="logos">
+        <img src="../../public/feadr/ue-cofinantat.png" style="height:6.4mm" alt="Cofinanțat de Uniunea Europeană">
+        <img src="../../public/feadr/guvernul-romaniei.png" style="height:6.4mm" alt="Guvernul României">
+        <img src="../../public/feadr/madr.svg" style="height:6mm" alt="MADR">
+        <img src="../../public/feadr/afir_logotip.png" style="height:5.4mm" alt="AFIR">
+        <img src="../../public/feadr/leader.webp" style="height:5.4mm" alt="LEADER">
+      </div>
+      <p>Proiect finanțat prin FEADR — Planul Strategic PAC 2023–2027, măsura LEADER.<br>Beneficiar: AXION VISION SRL · Cod proiect F36010806109241703226</p>
+    </div>
+    <div class="legal">© 2026 AXION VISION SRL · CAEN 6220</div>
+  </div>
+
+  <!-- ===== Copertă (dreapta) ===== -->
+  <div class="panel w100 cover">
+    <div class="brand">
+      <svg viewBox="0 0 32 32">
+        <defs><linearGradient id="lg" x1="8" y1="8" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop stop-color="#00f0ff"/><stop offset="1" stop-color="#8a2be2"/></linearGradient></defs>
+        <rect width="32" height="32" rx="7" fill="#0d0d11" stroke="#26262e" stroke-width=".6"/>
+        <path d="M8 23.5 16 8.5 24 23.5" fill="none" stroke="url(#lg)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M10.5 18.5h11" fill="none" stroke="#00f0ff" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <div class="name">PROJECT AXION</div>
+        <div class="sub">AXION VISION SRL</div>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="kicker">// Consultanță IT &amp; dezvoltare web</div>
+      <h1>Ecosisteme digitale de <span class="grad-text">înaltă performanță</span> pentru firma ta.</h1>
+      <p class="lead">Consultanță IT, site-uri rapide și mentenanță pentru IMM-uri din România — de la audit și arhitectură până la operare zilnică.</p>
+      <div class="chips">
+        <span class="chip"><i>◇</i>Consultanță IT</span>
+        <span class="chip"><i>◇</i>Portaluri web</span>
+        <span class="chip"><i>◇</i>Mentenanță IT</span>
+        <span class="chip"><i>◇</i>Securitate &amp; cloud</span>
+      </div>
+    </div>
+
+    <div class="foot">
+      <div class="status"><span class="dot"></span>SYS_STATUS: OPTIMAL // OFERTĂ GRATUITĂ</div>
+      <div class="url-big">projectaxion.ro</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= PAGINA 2 — INTERIOR ======================= -->
+<section class="sheet interior">
+  <div class="band"></div>
+  <div class="band-bottom"></div>
+
+  <!-- 01 -->
+  <div class="panel w100 i1">
+    <div class="svc-head"><span class="svc-num">01</span><span class="tier">Activitate principală</span></div>
+    <h2>Consultanță IT &amp; infrastructură</h2>
+    <p class="intro">Un partener IT care înțelege atât tehnologia, cât și realitatea unui IMM: buget limitat, termene clare și zero toleranță pentru downtime. Începem cu un audit clar: ce funcționează, ce e riscant și ce trebuie schimbat primul.</p>
+    <div class="sub-k">Ce primești concret</div>
+    <ul class="ticks">
+      <li>Audit tehnic al sistemelor și infrastructurii existente</li>
+      <li>Plan de acțiune prioritizat pe riscuri și buget</li>
+      <li>Arhitectură cloud (Cloudflare, Supabase, PostgreSQL)</li>
+      <li>Aplicații web și API-uri scalabile</li>
+      <li>Automatizări și integrări între sisteme</li>
+      <li>Securitate cibernetică și conformitate GDPR</li>
+      <li>Suport, SLA-uri și instruire pentru echipă</li>
+    </ul>
+    <div class="sub-k">Ideal pentru</div>
+    <ul class="aud"><li>IMM-uri care digitalizează procesele interne</li><li>Firme de servicii care au nevoie de aplicații web custom</li><li>Antreprenori care vor infrastructură IT sigură de la început</li><li>Companii care migrează de la soluții vechi la cloud modern</li></ul>
+    <div class="callout"><b>Evaluare IT gratuită</b><span>Ne spui ce sisteme folosești — primești pașii recomandați în 24 h.</span></div>
+  </div>
+
+  <!-- 02 -->
+  <div class="panel w100 i2">
+    <div class="svc-head"><span class="svc-num">02</span><span class="tier">Dezvoltare web</span></div>
+    <h2>Site-uri &amp; portaluri web</h2>
+    <p class="intro">Primul contact al clienților cu firma ta e adesea online. Construim de la zero site-uri de prezentare și portaluri corporate — rapide, sigure, optimizate pentru Google și gândite să crească odată cu afacerea ta.</p>
+    <div class="sub-k">Ce livrăm</div>
+    <ul class="ticks">
+      <li>Site de prezentare sau portal web custom</li>
+      <li>Design responsive: mobil, tabletă, desktop</li>
+      <li>SEO tehnic și performanță (Core Web Vitals)</li>
+      <li>Formulare de contact și integrări email</li>
+      <li>Zone cu autentificare, roluri și extranet</li>
+      <li>Administrare conținut dinamic</li>
+      <li>Găzduire Cloudflare cu SSL și protecție DDoS</li>
+    </ul>
+    <div class="sub-k">Ideal pentru</div>
+    <ul class="aud"><li>Firme care au nevoie de prezență online profesională</li><li>Companii care vor un portal pentru clienți sau parteneri</li><li>Antreprenori care lansează un brand nou pe piață</li><li>Business-uri care înlocuiesc un site vechi cu unul modern</li></ul>
+    <div class="callout"><b>Site live în 2–4 săptămâni</b><span>Portaluri avansate: 1–3 luni, în funcție de integrări.</span></div>
+  </div>
+
+  <!-- 03 -->
+  <div class="panel w97 i3">
+    <div class="svc-head"><span class="svc-num">03</span><span class="tier">Service &amp; suport</span></div>
+    <h2>Mentenanță IT &amp; reparații</h2>
+    <p class="intro">Când un calculator sau o rețea se oprește, firma pierde productivitate imediat. Mentenanța preventivă identifică riscurile înainte să devină urgențe scumpe — iar fiecare intervenție este documentată.</p>
+    <div class="sub-k">Servicii</div>
+    <ul class="ticks">
+      <li>Repararea calculatoarelor și stațiilor de lucru</li>
+      <li>Rețele locale, routere, switch-uri și Wi-Fi</li>
+      <li>Diagnostic hardware și software</li>
+      <li>Planuri de mentenanță preventivă programată</li>
+      <li>Instalare, configurare și upgrade componente</li>
+      <li>Verificare backup și actualizări de sistem</li>
+      <li>Suport de urgență la fața locului</li>
+    </ul>
+    <div class="sub-k">Ideal pentru</div>
+    <ul class="aud"><li>Birouri mici cu 2–20 stații de lucru</li><li>Firme din Dolj care au nevoie de intervenții locale</li><li>IMM-uri fără departament IT intern</li><li>Firme care vor un singur partener IT, hardware și software</li></ul>
+    <div class="callout"><b>Intervenții rapide în Dolj</b><span>Pentru restul țării, rezolvăm majoritatea problemelor remote.</span></div>
+  </div>
+
+  <!-- linii subsol pe banda închisă -->
+  <div class="footline" style="left:11mm;width:84mm;right:auto"><span>Project Axion</span><span>Consultanță</span></div>
+  <div class="footline" style="left:111mm;width:84mm;right:auto"><span><em>●</em> projectaxion.ro</span><span>Web</span></div>
+  <div class="footline" style="left:211mm;width:81mm;right:auto"><span>Ofertă în 24 h</span><span>Mentenanță</span></div>
+</section>
+
+</body>
+</html>
