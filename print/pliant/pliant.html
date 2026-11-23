@@ -52,7 +52,7 @@
   .label { display: flex; align-items: center; gap: 2.4mm; font-size: 6pt; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--violet); }
   .label::before { content: ""; width: 7mm; height: .7mm; border-radius: 1mm; background: var(--grad); }
   .dark .label { color: var(--cyan); }
-  .grad-text { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .grad-text { color: #22c9e0; } /* culoare plină: background-clip:text produce linii parazite în PDF */
 
   /* ================= COPERTĂ ================= */
   .cover { left: 200mm; }
